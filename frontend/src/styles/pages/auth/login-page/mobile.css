@@ -1,0 +1,171 @@
+.login-page {
+  align-items: center;
+  background-image: linear-gradient(
+    160deg,
+    var(--color-primary) 50%,
+    var(--color-background) 50%
+  );
+  display: flex;
+  justify-content: center;
+  min-height: 100dvh;
+  width: 100%;
+  overflow-x: hidden;
+}
+
+.login-card {
+  background-color: var(--color-background);
+  border-radius: 20px;
+  color: var(--color-text-primary);
+  display: flex;
+  flex-direction: column;
+  max-width: 21rem;
+  width: 100%;
+  overflow: hidden;
+  box-shadow: rgba(0, 0, 0, 0.2) 0px 8px 24px;
+}
+
+.login-card h1 {
+  color: var(--color-text-primary);
+  font-weight: 600;
+  text-align: left;
+  margin: 60px 15px 15px 1.2rem;
+}
+
+.login-card .subtittle {
+  color: var(--color-text-secondary);
+  font-size: 1rem;
+  text-align: left;
+  margin: 10px 0 10px 1.2rem;
+}
+
+.login-card .login-form {
+  margin: auto;
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Input estilizado no componente */
+
+/* Início Botão */
+
+button {
+  font-family: var(--primary-font);
+}
+
+.login-card .login-button {
+  border-radius: 20px;
+  background-color: var(--color-primary);
+  border: none;
+  box-shadow: rgba(0, 0, 0, 0.2) 0px 8px 24px;
+  color: var(--color-primary-light);
+  font-size: 1rem;
+  font-weight: 600;
+  padding: 12px;
+  margin-top: 10px;
+  transition: transform 0.1s ease;
+  width: 19rem;
+}
+
+.login-card .login-button:active {
+  transform: scale(0.95);
+  background-color: var(--color-primary-dark);
+}
+/* Fim Botão */
+
+/* início remember - me  */
+
+/*Ocultando o visual*/
+.remember-forgot-wrapper {
+  display: flex;
+  align-items: start;
+  width: 90%;
+}
+
+.esconder-visual {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+}
+
+.checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 1rem;
+  color: var(--color-primary);
+  cursor: pointer;
+  user-select: none;
+}
+
+/*Quadrado do checkbox*/
+.checkbox-label::before {
+  content: "";
+  display: inline-block;
+  width: 13px;
+  height: 13px;
+  border: 2px solid var(--color-primary);
+  border-radius: 4px;
+  background-color: transparent;
+  transition: all 0.2s ease-in-out;
+}
+
+.esconder-visual:checked + .checkbox-label::before {
+  background-color: var(--color-primary);
+  border-color: var(--color-primary);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='20 6 9 17 4 12'%3E%3C/polyline%3E%3C/svg%3E");
+  background-size: 80%;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.esconder-visual:focus-visible + .checkbox-label::before {
+  outline: 2px solid var(--color-secondary);
+  outline-offset: 2px;
+}
+
+/* Início Não possui conta & Cadastre-se */
+.login-card .no-account-text {
+  color: var(--color-text-secondary);
+  font-size: 1rem;
+  margin-top: 20px;
+}
+
+.login-card .no-account-text .register-text {
+  background: none;
+  border: none;
+  color: var(--color-primary);
+  font-weight: bolder;
+  font-size: 1rem;
+  text-decoration: underline;
+}
+
+.login-card .forgot-password {
+  background: none;
+  border: none;
+  color: var(--color-primary);
+  font-size: 1rem;
+  font-weight: bolder;
+  margin: 20px 0;
+  text-decoration: underline;
+}
+
+.login-card .forgot-password:visited,
+.login-card .no-account-text .register-text:visited {
+  color: var(--color-primary-dark);
+}
+
+/* Escondendo elementos */
+
+.hero-page,
+.logo-wrapper,
+.title-desktop {
+  display: none;
+}
+
+/* Fim Não possui conta & Cadastre-se */

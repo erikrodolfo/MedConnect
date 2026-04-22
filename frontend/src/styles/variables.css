@@ -1,0 +1,33 @@
+:root {
+  /* Cor da Marca */
+  --color-primary: #0833c7; /* identidade */
+  --color-primary-dark: #06259a;
+  --color-primary-light: #e8eeff;
+  --color-primary-lighter: #f4f6ff;
+
+  /* Cores secundárias */
+  --color-secondary: #2176ff;
+
+  /* Superfícies (Backgrounds) */
+  --color-surface: #f5f8ff; /* Branco neve - cards, inputs */
+  --color-background: #f9fafb; /* Cinza claro - fundo da página */
+  --color-background-alt: #f3f4f6; /* Cinza - alternativo */
+
+  /* Texto */
+  --color-text-primary: #000000; /* Texto principal */
+  --color-text-secondary: #686e7a; /* Texto secundário */
+  --color-text-disabled: #9ca3af; /* Texto desabilitado */
+
+  /* Bordas */
+  --color-border: #e5e7eb; /* Bordas sutis */
+  --color-border-focus: var(--color-primary); /* Borda em foco */
+
+  /* status colors */
+  --color-success: #10b981; /* Verde */
+  --color-error: #ef4444; /* Vermelho */
+  --color-warning: #fdae26; /* Laranja */
+  --color-info: #3b82f6; /* Azul claro */
+
+  /* Fontes */
+  --primary-font: "Josefin Sans", sans-serif;
+}

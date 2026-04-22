@@ -1,0 +1,118 @@
+@media screen and (min-width: 1300px) and (min-height: 600px) {
+  .login-wrapper {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .login-page {
+    background: var(--color-background);
+    width: 100vw;
+    height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    overflow: hidden;
+    margin: auto;
+  }
+
+  /* Card Login e Formulário */
+  .login-card {
+    box-shadow: none;
+    min-width: 28rem;
+    min-height: auto;
+    margin: auto;
+  }
+
+  .login-card .logo-wrapper {
+    width: 100%;
+  }
+
+  .login-card .logo-wrapper img {
+    width: 18rem;
+    margin: 0;
+  }
+
+  .login-card .title-desktop {
+    margin-left: 2.1rem;
+    display: block;
+    font-size: 2.2rem;
+    max-width: 23.8rem;
+    font-weight: 700;
+  }
+
+  .login-card .subtittle {
+    font-size: 1.1rem;
+    max-width: 23.8rem;
+    margin: 0 0 40px 2.1rem;
+  }
+
+  .login-page .forgot-password {
+    width: 17rem;
+  }
+  
+  /* Botões */
+  .login-card .login-button {
+    border-radius: 10px;
+    width: 23.7rem;
+    padding: 15px 0;
+    font-size: 1.5rem;
+    margin: 1.9rem 0;
+    transition: all 0.3s ease-in-out;
+  }
+
+  .login-card .login-button:hover {
+    background-color: var(--color-secondary);
+    -webkit-box-shadow:
+      0px 0px 15px var(--color-secondary),
+      0 0 30px var(--color-primary-light);
+    -moz-box-shadow:
+      0px 0px 15px var(--color-secondary),
+      0 0 30px var(--color-primary-light);
+    box-shadow:
+      0px 0px 15px var(--color-secondary),
+      0 0 30px var(--color-primary-light);
+  }
+
+  /* Lembrar-me, Esqueci a senha, Criar um cadastro */
+  .remember-me-wrapper {
+    width: 85%;
+  }
+
+  .login-card .remember-forgot-wrapper {
+    width: 95%;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .login-card .no-account-text,
+  .login-card .no-account-text .register-text {
+    font-size: 1.1rem;
+  }
+
+  .no-account-text .register-text:hover,
+  .forgot-password:hover {
+    text-decoration: underline;
+  }
+
+  /* Hero (imagem lateral) */
+  .hero-page {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    min-height: 100vh;
+  }
+
+  .hero-page .hero-image {
+    width: 100%;
+    min-height: 100vh;
+    object-fit: cover;
+  }
+
+  /* Títulos */
+  .title-mobile {
+    display: none;
+  }
+}

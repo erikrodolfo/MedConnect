@@ -1,0 +1,80 @@
+html, body {
+  scroll-behavior: smooth;
+  background-color: var(--color-primary);
+}
+
+#app {
+  max-width: none;
+  margin: 0;
+  padding: 0;
+  width: 100vw !important;
+  font-family: var(--primary-font);
+  overflow: hidden;
+}
+
+.Toastify__toast {
+  margin-top: 30px;
+  border-radius: 12px !important;
+  transition: all 0.3s ease !important;  
+  font-family: var(--primary-font);
+  background-color: var(--color-background);
+}
+
+/* Mudando as cores do texto */
+
+.Toastify__toast--success {
+  color: var(--color-success) !important;
+}
+
+.Toastify__toast--error {
+  color: var(--color-error) !important;
+}
+
+.Toastify__toast--warning {
+  color: var(--color-warning) !important;
+}
+
+.Toastify__toast--info {
+  color: var(--color-info) !important;
+}
+
+
+/* mudando as cores dos ícones */
+.Toastify__toast--success .Toastify__toast-icon svg {
+  fill: var(--color-success) !important;
+}
+
+.Toastify__toast--error .Toastify__toast-icon svg {
+  fill: var(--color-error) !important;
+}
+
+.Toastify__toast--warning .Toastify__toast-icon svg {
+  fill:  var(--color-warning) !important;
+}
+
+.Toastify__toast--info .Toastify__toast-icon svg {
+  fill: var(--color-info) !important;
+}
+
+/* Mudando a cor da barra de progresso */
+
+.Toastify__toast--success .Toastify__progress-bar {
+  background: var(--color-success) !important;
+}
+
+
+.Toastify__toast--warning .Toastify__progress-bar {
+  background: var(--color-warning) !important;
+}
+
+
+.Toastify__toast--error .Toastify__progress-bar {
+  background: var(--color-error) !important;
+}
+
+
+.Toastify__toast--info .Toastify__progress-bar {
+  background: var(--color-info) !important;
+}
+
+
