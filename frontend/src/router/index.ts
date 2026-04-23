@@ -20,10 +20,11 @@ const routes = [
     path: "/cadastro-step1",
     name: "CadastroPasso1",
     component: CadastroPasso1View,
-  }, {
+  },
+  {
     path: "/cadastro-step2",
     name: "CadastroPasso2",
-    component: CadastroPasso2View
+    component: CadastroPasso2View,
   },
   {
     path: "/dashboard",
@@ -37,13 +38,15 @@ const routes = [
     name: "AdminDashboard",
     component: () => import("../views/DashboardAdmin.vue"),
     meta: { requiresAuth: true, requiresAdmin: true },
-  }, {
+  },
+  {
     path: "/forgot-password",
-    component: ForgotPasswordView
-  }, {
+    component: ForgotPasswordView,
+  },
+  {
     path: "/reset-password",
-    component: ResetPasswordView
-  }
+    component: ResetPasswordView,
+  },
 ];
 
 const router = createRouter({
@@ -52,19 +55,19 @@ const router = createRouter({
 });
 
 //navigation guard
-router.beforeEach((to, from) => {
+router.beforeEach((to) => {
   const token = localStorage.getItem("token");
   const usuarioInfo = localStorage.getItem("usuario");
   const perfilUsuario = usuarioInfo ? JSON.parse(usuarioInfo).role : null;
 
   if (to.meta.requiresAuth && !token) {
-    return "/login"
+    return "/login";
   }
 
   if (to.meta.requiresAdmin && perfilUsuario !== "ADMIN") {
-    return "/dashboard"
+    return "/dashboard";
   }
 
-  return true //permite continuar
+  return true; //permite continuar
 });
 export default router;
