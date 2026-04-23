@@ -1,6 +1,14 @@
 import axios from "axios";
 import router from "../router"; // Porta de saída - usado para redirecionar usuário
 
+// Estende o tipo AxiosRequestConfig para incluir skipAuthRedirect
+declare module 'axios' {
+  export interface AxiosRequestConfig {
+    skipAuthRedirect?: boolean;
+  }
+}
+
+
 // Cria a instância do axios com configuração padrão
 const api = axios.create({
   // baseURL: URL base para todas as requisições
