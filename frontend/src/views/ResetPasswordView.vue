@@ -1,128 +1,144 @@
 <template>
-  <form @submit.prevent="resetarSenha">
-    <h1>Redefinir senha</h1>
-    <!--Input nova senha-->
-    <input
-      v-model="novaSenha"
-      :type="mostrarSenha ? 'text' : 'password'"
-      placeholder="Digite sua nova senha"
-      @input="calcularForcaSenha"
-    />
+  <div class="reset-password-page">
+    <div class="reset-password-card">
+      <h1>Crie sua nova senha</h1>
+      <p class="subtittle">
+        Digite e confirme sua nova senha para acessar sua conta.
+      </p>
+      <form class="reset-password-form" @submit.prevent="resetarSenha">
+        <!--Input nova senha-->
+        <InputField
+          :type="mostrarSenha ? 'text' : 'password'"
+          v-model="novaSenha"
+          placeholder="Digite sua nova senha"
+          id="novaSenha"
+          :minlength="6"
+          :required="true"
+          :left-icon="LockKeyholeIcon"
+          :right-icon="mostrarSenha ? Eye : EyeOff"
+          @toggle="toggleSenha"
+        />
+        <!--Input confirmar senha-->
+            <InputField
+          :type="mostrarSenha ? 'text' : 'password'"
+          v-model="confirmarSenha"
+          placeholder="Confirme sua nova senha"
+          id="novaSenha"
+          :minlength="6"
+          :required="true"
+          :left-icon="LockKeyholeIcon"
+           :right-icon="mostrarSenha ? Eye : EyeOff"
+          @toggle="toggleSenha"
+        />
 
-    <!--Input confirmar senha-->
-    <input
-      :type="mostrarSenha ? 'text' : 'password'"
-      placeholder="Confirme sua nova senha"
-      v-model="confirmarSenha"
-    />
+        <!--calcular força da senha-->
+        <Transition name="slide-fade">
+          <div v-if="novaSenha" class="requisitos-senha">
+            <p :class="{ 'senha-ok': senhaValida }">
+              <component
+                :is="senhaValida ? CircleCheckBig : CircleAlertIcon"
+                :size="14"
+                :stroke-width="2"
+              />
+              {{
+                !senhaValida
+                  ? "Sua senha deve atender a todos os requisitos abaixo."
+                  : "Sua senha atende a todos os requisitos."
+              }}
+            </p>
+            <ul>
+              <!--Tem maiúscula-->
+              <li :class="{ valido: temMaiuscula }">
+                <component
+                  :is="temMaiuscula ? CircleCheck : CircleX"
+                  :size="14"
+                />
+                1 letra maiúscula
+              </li>
 
-    <!--calcular força da senha-->
-    <div v-if="novaSenha">
-      <span :class="'senha-' + forcaSenha">{{ forcaSenha }}</span>
+              <!--Tem número-->
+              <li :class="{ valido: temNumeros }">
+                <component
+                  :is="temNumeros ? CircleCheck : CircleX"
+                  :size="14"
+                />
+                1 número
+              </li>
+
+              <!--Tem caractere especial-->
+              <li :class="{ valido: temEspeciais }">
+                <component
+                  :is="temEspeciais ? CircleCheck : CircleX"
+                  :size="14"
+                />
+                1 caractere especial
+              </li>
+
+              <!--Mínimo 8 caracteres-->
+              <li :class="{ valido: tamanhoMinSenha }">
+                <component
+                  :is="tamanhoMinSenha ? CircleCheck : CircleX"
+                  :size="14"
+                />
+                Mínimo 8 caracteres
+              </li>
+            </ul>
+          </div>
+        </Transition>
+        
+        <!--Botão redefinir-->
+        <button class="reset-password-button" type="submit" :disabled="carregando">
+          {{ carregando ? "Redefinindo" : "Redefinir senha" }}
+        </button>
+      </form>
+      <div v-if="mensagem">{{ mensagem }}</div>
+      <div v-if="mensagem && contadorRedirect > 0">
+        Redirecionando em...{{ contadorRedirect }}
+      </div>
     </div>
-
-    <!--botão mostrar senha-->
-    <button type="button" @click="mostrarSenha = !mostrarSenha">
-      {{ mostrarSenha ? "Ocultar" : "Mostrar" }}
-    </button>
-
-    <!--Botão redefinir-->
-    <button type="submit" :disabled="carregando">
-      {{ carregando ? "Redefinindo" : "Redefinir senha" }}
-    </button>
-  </form>
-  <div v-if="mensagemErro">{{ mensagemErro }}</div>
-  <div v-if="mensagem">{{ mensagem }}</div>
-  <div v-if="mensagem && contadorRedirect > 0">
-    Redirecionando em...{{ contadorRedirect }}
   </div>
 </template>
 
-<style scoped>
-/* Estilos base do formulário */
-form {
-  max-width: 400px;
-  margin: 50px auto;
-  padding: 20px;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-}
-
-input {
-  width: 100%;
-  padding: 10px;
-  margin-bottom: 15px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  font-size: 16px;
-}
-
-button {
-  width: 100%;
-  padding: 12px;
-  background-color: #4caf50;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  font-size: 16px;
-  cursor: pointer;
-  margin-top: 10px;
-}
-
-button:disabled {
-  background-color: #ccc;
-  cursor: not-allowed;
-}
-
-/* Mensagens de feedback */
-.mensagem-erro {
-  color: red;
-  margin-top: 10px;
-  padding: 10px;
-  background-color: #ffe6e6;
-  border-radius: 4px;
-}
-
-.mensagem {
-  color: green;
-  margin-top: 10px;
-  padding: 10px;
-  background-color: #e6ffe6;
-  border-radius: 4px;
-}
-
-/* Cores para força da senha */
-.senha-Fraca {
-  color: red;
-  font-weight: bold;
-}
-
-.senha-Média {
-  color: orange;
-  font-weight: bold;
-}
-
-.senha-Forte {
-  color: green;
-  font-weight: bold;
-}
-</style>
-
-<script setup>
-import { onMounted, ref } from "vue"; //onMounted: executar código quando o componente carrega
+<script setup lang="ts">
+import { toast } from "vue3-toastify";
+import "vue3-toastify/dist/index.css";
+import { onMounted, ref, computed, watch } from "vue"; //onMounted: executar código quando o componente carrega
 import { useRouter, useRoute } from "vue-router"; //useRouter: redirecionar | useRoute: pegar o token da URL
 import api from "../services/api";
+import '@/styles/pages/auth/reset-password-page/mobile.css'
+import InputField from "../components/InputField.vue";
+import {
+  Eye,
+  EyeOff,
+  LockKeyholeIcon,
+  CircleCheck,
+  CircleX,
+  CircleAlertIcon,
+  CircleCheckBig,
+} from "@lucide/vue";
 
 //variáveis
 const token = ref("");
 const novaSenha = ref("");
 const confirmarSenha = ref("");
 const mensagem = ref("");
-const mensagemErro = ref("");
 const carregando = ref(false);
 const mostrarSenha = ref(false);
-const forcaSenha = ref("");
 const contadorRedirect = ref(3);
+const temMaiuscula = ref(false);
+const temNumeros = ref(false);
+const temEspeciais = ref(false);
+const tamanhoMinSenha = ref(false);
+
+//juntando todas as validações com o computed
+const senhaValida = computed(() => {
+  return (
+    temMaiuscula.value &&
+    temNumeros.value &&
+    temEspeciais.value &&
+    tamanhoMinSenha.value
+  );
+});
 
 const router = useRouter(); //navegar entre páginas
 const route = useRoute(); //acessar informações da URL
@@ -135,46 +151,24 @@ onMounted(() => {
   }
 });
 
-//calculando força da senha
-const calcularForcaSenha = () => {
-  const tamanho = novaSenha.value.length;
-
-  const temLetras = /[a-zA-Z]/.test(novaSenha.value);
-  const temNumeros = /[0-9]/.test(novaSenha.value);
-  const temEspeciais = /[!@#$%^&*]/.test(novaSenha.value);
-
-  //.test() retorna true se encontrar o padrão e false se não encontrar
-
-  if (tamanho < 6) {
-    forcaSenha.value = "Fraca";
-  } else if (tamanho >= 8 && temLetras && temNumeros && temEspeciais) {
-    forcaSenha.value = "Forte";
-  } else {
-    forcaSenha.value = "Média";
-  }
-};
-
 const resetarSenha = async () => {
-  mensagem.value = "";
-  mensagemErro.value = "";
-
   if (!token.value) {
     console.log("Token não encontrado");
     return;
   }
 
   if (!novaSenha.value) {
-    mensagemErro.value = "Digite uma nova senha";
+    toast.warning("Digite uma nova senha");
     return;
   }
 
   if (novaSenha.value.length < 6) {
-    mensagemErro.value = "Senha deve ter no mínimo 6 caracteres";
+    toast.error("Senha deve ter no mínimo 6 caracteres");
     return;
   }
 
   if (confirmarSenha.value !== novaSenha.value) {
-    mensagemErro.value = "As senhas não coincidem";
+    toast.error("As senhas não coincidem");
     return;
   }
 
@@ -192,7 +186,7 @@ const resetarSenha = async () => {
       },
     );
 
-    mensagem.value = reposta.data.mensagem;
+    toast.info(reposta.data.mensagem);
 
     contadorRedirect.value = 3;
 
@@ -206,10 +200,22 @@ const resetarSenha = async () => {
         router.push("/login");
       }
     }, 1000);
-  } catch (error) {
-    mensagemErro.value = error.response?.data?.erro || "Erro ao resetar senha";
+  } catch (error: any) {
+    toast.error(error.response?.data?.erro || "Erro ao resetar senha");
   } finally {
     carregando.value = false;
   }
+};
+
+watch(novaSenha, (novaSenha) => {
+  temMaiuscula.value = /[A-Z]/.test(novaSenha);
+  temNumeros.value = /[0-9]/.test(novaSenha);
+  temEspeciais.value = /[!@#$%^&*]/.test(novaSenha);
+  tamanhoMinSenha.value = novaSenha.length >= 8;
+});
+
+/* Mostrar senha */
+const toggleSenha = () => {
+  mostrarSenha.value = !mostrarSenha.value;
 };
 </script>
