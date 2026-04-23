@@ -58,7 +58,10 @@
               Esqueci minha senha
             </button>
           </div>
-          <button type="submit" class="login-button">Entrar</button>
+          <button type="submit" class="login-button" :disabled="carregando">
+            <Loader2Icon v-if="carregando" :size="14" :stroke-width="2" class="spinner"/>
+            {{ carregando ? 'Entrando' : 'Entrar' }}
+          </button>
         </form>
         <p class="no-account-text">
           Ainda não possui conta?
@@ -83,13 +86,12 @@
   </div>
 </template>
 
-<script setup>
-import axios from "axios";
+<script setup lang="ts">
 import { toast } from "vue3-toastify";
 import "vue3-toastify/dist/index.css";
 import { ref } from "vue";
 import { useRouter } from "vue-router";
-import { Mail, LockKeyhole, LockKeyholeIcon, Eye, EyeOff } from "@lucide/vue";
+import { Mail, LockKeyholeIcon, Eye, EyeOff, Loader2Icon } from "@lucide/vue";
 import InputField from "../components/InputField.vue";
 //arquivos de estilo
 import "@/styles/pages/auth/login-page/mobile.css";
@@ -108,8 +110,12 @@ const senha = ref("");
 const mostrarSenha = ref(false);
 const lembrarMe = ref(false);
 const isDesktop = ref(window.innerWidth >= 768);
+const carregando = ref(false)
 
 const fazerLogin = async () => {
+
+  carregando.value = true
+
   const dados = {
     email: email.value,
     senha: senha.value,
@@ -122,10 +128,10 @@ const fazerLogin = async () => {
     const storage = lembrarMe.value ? localStorage : sessionStorage;
 
     //salvando a chave de acesso
-    localStorage.setItem("token", data.token);
+    storage.setItem("token", data.token);
 
     //salvando o crachá e convertendo o objeto em string para o navegador conseguir guardar
-    localStorage.setItem("usuario", JSON.stringify(data.usuario));
+    storage.setItem("usuario", JSON.stringify(data.usuario));
 
     //redirecionamento
     if (data.usuario.role === "ADMIN") {
@@ -135,7 +141,7 @@ const fazerLogin = async () => {
       router.push("/dashboard");
     }
     toast.success("Login feito com sucesso");
-  } catch (erro) {
+  } catch (erro: any) {
     console.error(erro);
     if (erro.response && erro.response.data && erro.response.data.erro) {
       toast.error(erro.response.data.erro);
@@ -143,6 +149,8 @@ const fazerLogin = async () => {
     } else {
       toast.error("Erro de conexão com o servidor");
     }
+  } finally {
+    carregando.value = false
   }
 };
 
