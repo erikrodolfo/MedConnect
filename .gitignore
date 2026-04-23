@@ -1,0 +1,11 @@
+# Guias de deploy (documentação local)
+DEPLOY-*.md
+GUIA-*.md
+
+# IDEs
+.vscode/
+.idea/
+
+# Sistema
+.DS_Store
+Thumbs.db
