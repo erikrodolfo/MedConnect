@@ -133,7 +133,6 @@ const novaSenha = ref("");
 const confirmarSenha = ref("");
 const carregando = ref(false);
 const mostrarSenha = ref(false);
-const contadorRedirect = ref(3);
 const temMaiuscula = ref(false);
 const temNumeros = ref(false);
 const temEspeciais = ref(false);
@@ -184,7 +183,7 @@ const resetarSenha = async () => {
   carregando.value = true;
 
   try {
-    const reposta = await api.post(
+    const { data } = await api.post(
       "/auth/reset-password",
       {
         token: token.value,
@@ -193,28 +192,17 @@ const resetarSenha = async () => {
       {
         skipAuthRedirect: true,
       },
-    );
+    )
+   //toast de sucesso
+      toast.success(`${data.mensagem} Redirecionando em 3 segundos...`, {
+    autoClose: 3000,
+  });
 
-    toast.success(reposta.data.mensagem);
-
-    contadorRedirect.value = 3;
-
-    //Decrementa a cada 1 segundo
-    const intervalo = setInterval(() => {
-      contadorRedirect.value--;
-
-      //mostrando toast
-      toast.info(`Redirecionando em ${contadorRedirect.value}...`, {
-        autoClose: 1000, //fecha automaticamente em 1s
-        hideProgressBar: false //mostra a barra de progresso
-      })
-
-      //quando chegar a 0, redirecionar
-      if (contadorRedirect.value === 0) {
-        clearInterval(intervalo); //para o intervalo
-        router.push("/login");
-      }
-    }, 1000);
+  //aguarda 3s para redirecionar
+  setTimeout(() => {
+    router.push("login")
+  }, 3000)
+  
   } catch (error: any) {
     toast.error(error.response?.data?.erro || "Erro ao resetar senha");
   } finally {
