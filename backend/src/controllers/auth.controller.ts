@@ -137,7 +137,7 @@ export const solicitarRecuperacao = async (
 
   if (!usuario) {
     return res.status(200).json({
-      messagem: 'Se o email existir, enviaremos um link de recuperação',
+      mensagem: 'Se o email existir, enviaremos um link de recuperação',
     });
   }
 
