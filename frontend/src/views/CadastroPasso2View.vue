@@ -185,9 +185,10 @@ const buscarCep = async () => {
       cidade.value = resposta.data.localidade;
 
       console.log("✅ Campos preenchidos!");
+      return
     } catch (erro) {
       console.error("❌ Erro ao buscar CEP:", erro);
-      alert("CEP não encontrado ou erro no servidor.");
+      toast.error("CEP não encontrado ou erro no servidor.");
     }
   } else {
     console.log("⚠️ CEP inválido (não tem 8 dígitos)");
