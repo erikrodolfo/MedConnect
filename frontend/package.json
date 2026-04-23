@@ -13,6 +13,7 @@
   "dependencies": {
     "@lucide/vue": "^1.7.0",
     "axios": "^1.13.6",
+    "esbuild": "^0.24.2",
     "pinia": "^3.0.4",
     "vue": "^3.5.30",
     "vue-final-modal": "^4.5.5",
