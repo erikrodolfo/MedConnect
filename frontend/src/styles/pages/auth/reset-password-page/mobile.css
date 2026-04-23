@@ -122,3 +122,14 @@
 .slide-fade-leave-from {
   max-height: 200px; /* altura aproximada da div de requisitos */
 }
+
+/* carregando... */
+.reset-password-card .reset-password-button:disabled {
+  opacity: 0.8;
+  cursor: not-allowed;
+  padding: 11px;
+}
+
+.resete-password-card .spinner {
+  animation: spin 1s linear infinite;
+}

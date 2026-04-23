@@ -88,13 +88,11 @@
         
         <!--Botão redefinir-->
         <button class="reset-password-button" type="submit" :disabled="carregando">
+          <Loader2Icon class="spinner" v-if="carregando" :size="14" :stroke-width="2"
+          />
           {{ carregando ? "Redefinindo" : "Redefinir senha" }}
         </button>
       </form>
-      <div v-if="mensagem">{{ mensagem }}</div>
-      <div v-if="mensagem && contadorRedirect > 0">
-        Redirecionando em...{{ contadorRedirect }}
-      </div>
     </div>
   </div>
 </template>
@@ -126,13 +124,13 @@ import {
   CircleX,
   CircleAlertIcon,
   CircleCheckBig,
+  Loader2Icon
 } from "@lucide/vue";
 
 //variáveis
 const token = ref("");
 const novaSenha = ref("");
 const confirmarSenha = ref("");
-const mensagem = ref("");
 const carregando = ref(false);
 const mostrarSenha = ref(false);
 const contadorRedirect = ref(3);
@@ -197,13 +195,19 @@ const resetarSenha = async () => {
       },
     );
 
-    toast.info(reposta.data.mensagem);
+    toast.success(reposta.data.mensagem);
 
     contadorRedirect.value = 3;
 
     //Decrementa a cada 1 segundo
     const intervalo = setInterval(() => {
       contadorRedirect.value--;
+
+      //mostrando toast
+      toast.info(`Redirecionando em ${contadorRedirect.value}...`, {
+        autoClose: 1000, //fecha automaticamente em 1s
+        hideProgressBar: false //mostra a barra de progresso
+      })
 
       //quando chegar a 0, redirecionar
       if (contadorRedirect.value === 0) {
