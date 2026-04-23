@@ -99,6 +99,17 @@
   </div>
 </template>
 
+<style scoped>
+p {
+  transition: all 1s ease;
+}
+
+p.senha-ok, .senha-ok svg {
+  color: var(--color-success);
+}
+
+</style>
+
 <script setup lang="ts">
 import { toast } from "vue3-toastify";
 import "vue3-toastify/dist/index.css";
