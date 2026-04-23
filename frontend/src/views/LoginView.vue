@@ -86,7 +86,7 @@
 <script setup>
 import axios from "axios";
 import { toast } from "vue3-toastify";
-import 'vue3-toastify/dist/index.css'
+import "vue3-toastify/dist/index.css";
 import { ref } from "vue";
 import { useRouter } from "vue-router";
 import { Mail, LockKeyhole, LockKeyholeIcon, Eye, EyeOff } from "@lucide/vue";
@@ -99,6 +99,7 @@ import "@/styles/pages/auth/login-page/desktop.css";
 //imagens
 import MedicoImg from "../assets/medico.svg";
 import MediConnectLogo from "../assets/medConnect-logo.svg";
+import api from "../services/api";
 
 const router = useRouter();
 
@@ -115,10 +116,7 @@ const fazerLogin = async () => {
   };
 
   try {
-    const { data } = await axios.post(
-      "http://localhost:3000/auth/login",
-      dados,
-    );
+    const { data } = await api.post("/auth/login", dados);
 
     //salvando o login no localstorage caso o usuário queira
     const storage = lembrarMe.value ? localStorage : sessionStorage;
@@ -132,6 +130,7 @@ const fazerLogin = async () => {
     //redirecionamento
     if (data.usuario.role === "ADMIN") {
       router.push("/admin/dashboard");
+      return;
     } else {
       router.push("/dashboard");
     }
@@ -140,6 +139,7 @@ const fazerLogin = async () => {
     console.error(erro);
     if (erro.response && erro.response.data && erro.response.data.erro) {
       toast.error(erro.response.data.erro);
+      return;
     } else {
       toast.error("Erro de conexão com o servidor");
     }
@@ -150,7 +150,7 @@ const toggleSenha = () => {
   mostrarSenha.value = !mostrarSenha.value;
 };
 
-const cadastrar = () => router.push('/cadastro-step1');
+const cadastrar = () => router.push("/cadastro-step1");
 
 const irParaRecuperacao = () => {
   router.push("/forgot-password");
