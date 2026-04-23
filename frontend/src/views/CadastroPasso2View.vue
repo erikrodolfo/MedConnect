@@ -3,7 +3,9 @@
     <div class="cadastro-card">
       <div class="barra-wrapper">
         <div class="barra1"><!--Content 1--></div>
-        <div class="barra2" :style="{ '--progress': progresso + '%' }"><!--Content 2--></div>
+        <div class="barra2" :style="{ '--progress': progresso + '%' }">
+          <!--Content 2-->
+        </div>
       </div>
       <h1>Endereço</h1>
       <p class="subtittle">
@@ -60,9 +62,14 @@
             placeholder="Cidade"
           />
         </div>
-        <button class="cadastro-button" type="submit">Cadastrar</button>
+        <button class="cadastro-button" type="submit" :disabled="carregando">
+          <Loader2Icon v-if="carregando" :size="14" stroke-width="2" class="spinner"/>
+          {{ carregando ? 'Cadastrando' : 'Cadastrar' }}
+        </button>
 
-        <button class="voltar-button" type="button" @click="voltar">Voltar</button>
+        <button class="voltar-button" type="button" @click="voltar">
+          Voltar
+        </button>
       </form>
     </div>
   </div>
@@ -108,6 +115,16 @@
   border-radius: 10px;
 }
 
+.cadastro-card .cadastro-button:disabled {
+  opacity: 0.8;
+  cursor: not-allowed;
+  padding: 11px;
+}
+
+.cadastro-card .spinner {
+  animation: spin 1s linear infinite;
+}
+
 .cadastro-card .voltar-button {
   border-radius: 20px;
   background-color: var(--color-background-alt);
@@ -127,17 +144,27 @@
   background-color: var(--color-primary-light);
 }
 
+/* Animação botão cadastrar */
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
 </style>
 
 <!--Início Script-->
 
 <script setup lang="ts">
 import { toast } from "vue3-toastify";
-import 'vue3-toastify/dist/index.css'
+import "vue3-toastify/dist/index.css";
 import { ref, onMounted, computed } from "vue";
 import { useRouter } from "vue-router";
 import InputField from "../components/InputField.vue";
-import { Mailbox, MapPin, Hash, MapPinned, Building2 } from "@lucide/vue";
+import { Mailbox, MapPin, Hash, MapPinned, Building2, Loader2Icon } from "@lucide/vue";
 import api from "../services/api";
 
 /* Arquivos de estilos */
@@ -148,27 +175,27 @@ const logradouro = ref("");
 const numero = ref("");
 const bairro = ref("");
 const cidade = ref("");
+const carregando = ref(false)
 const dadosPasso1 = ref({
   nome: "",
   email: "",
-  senha: ""
-})
+  senha: "",
+});
 
-const router = useRouter();  //isso precisa vir antes de tudo
+const router = useRouter(); //isso precisa vir antes de tudo
 
 onMounted(() => {
   if (history.state && history.state.nome) {
     dadosPasso1.value = {
       nome: history.state.nome,
       email: history.state.email,
-      senha: history.state.senha
-    }
+      senha: history.state.senha,
+    };
   } else {
-    toast.warning("Por favor, preencha todos os dados do Passo 1")
-    router.push({ name: "CadastroPasso1" })
+    toast.warning("Por favor, preencha todos os dados do Passo 1");
+    router.push({ name: "CadastroPasso1" });
   }
-})
-
+});
 
 //função buscar cep
 const buscarCep = async () => {
@@ -178,25 +205,26 @@ const buscarCep = async () => {
   if (cepLimpo.length === 8) {
     try {
       const resposta = await api.get(`/cep/${cepLimpo}`);
-      console.log("✅ Resposta da API:", resposta.data);
+      console.log("Resposta da API:", resposta.data);
 
       logradouro.value = resposta.data.logradouro;
       bairro.value = resposta.data.bairro;
       cidade.value = resposta.data.localidade;
 
-      console.log("✅ Campos preenchidos!");
-      return
+      console.log("Campos preenchidos!");
+      return;
     } catch (erro) {
-      console.error("❌ Erro ao buscar CEP:", erro);
+      console.error("Erro ao buscar CEP:", erro);
       toast.error("CEP não encontrado ou erro no servidor.");
     }
   } else {
-    console.log("⚠️ CEP inválido (não tem 8 dígitos)");
+    console.log("CEP inválido (não tem 8 dígitos)");
   }
 };
 
 //função cadastrar usuario
 const cadastrarUsuario = async () => {
+  carregando.value = true
   if (
     !logradouro.value ||
     !numero.value ||
@@ -229,6 +257,8 @@ const cadastrarUsuario = async () => {
     } else {
       toast.error("Erro de conexão com o servidor");
     }
+  } finally {
+    carregando.value = false
   }
 };
 
@@ -239,15 +269,16 @@ const progresso = computed(() => {
     logradouro.value,
     numero.value,
     bairro.value,
-    cidade.value]
+    cidade.value,
+  ];
 
-    const preenchidos = campos.filter(v => v.trim() !== '').length
+  const preenchidos = campos.filter((v) => v.trim() !== "").length;
 
-    return (preenchidos / campos.length) * 100
-})
+  return (preenchidos / campos.length) * 100;
+});
 
 //função voltar
 const voltar = () => {
-  router.push('/cadastro-step1')
-}
+  router.push("/cadastro-step1");
+};
 </script>
