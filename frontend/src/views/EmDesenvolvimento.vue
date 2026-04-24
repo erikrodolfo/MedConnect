@@ -20,7 +20,7 @@ import { Construction, ArrowLeft } from "@lucide/vue";
 const router = useRouter();
 
 const voltar = () => {
-  router.back(); // Volta para a página anterior
+  router.push("/login"); // Volta para a página anterior
 };
 </script>
 
@@ -30,7 +30,11 @@ const voltar = () => {
   align-items: center;
   justify-content: center;
   min-height: 100vh;
-  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-secondary) 100%);
+  background: linear-gradient(
+    135deg,
+    var(--color-primary) 0%,
+    var(--color-secondary) 100%
+  );
 }
 
 .under-development-card {

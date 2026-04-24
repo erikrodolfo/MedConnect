@@ -141,7 +141,7 @@ export const solicitarRecuperacao = async (
     });
   }
 
-  //gerando um token com crypt randomByes com 32 bytes aleatório(256bits) e convertendo para hexadecimal (64 caracteres)
+  //gerando um token com crypt randomBytes com 32 bytes aleatório(256bits) e convertendo para hexadecimal (64 caracteres)
   const token = crypto.randomBytes(32).toString('hex');
 
   //hasheando o token com o hash SHA-256

@@ -1,0 +1,118 @@
+@media screen and (min-width: 768px) and (min-height: 600px) {
+    .cadastro-page {
+    background: var(--color-background);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    place-items: center;
+    width: 100%;
+    height: 100vh;
+    margin: 0;
+    overflow: hidden;
+  }
+
+  .cadastro-card {
+    background: transparent;
+    box-shadow: none;
+    margin: 0;
+    min-width: 26rem;
+  }
+
+    .cadastro-card .logo-wrapper {
+    display: block;
+    margin: 0 auto;
+    width: 100%;
+  }
+
+  .cadastro-card .logo-wrapper img {
+    width: 18rem;
+  }
+
+    /* Botões */
+  .cadastro-card .cadastro-button {
+    border-radius: 10px;
+    width: 23rem;
+    padding: 15px 0;
+    font-size: 1.2rem;
+    margin-top: 20px;
+    transition: all 0.3s ease-in-out;
+  }
+
+  .cadastro-card .cadastro-button:hover {
+    background-color: var(--color-secondary);
+    -webkit-box-shadow:
+      0px 0px 15px var(--color-secondary),
+      0 0 30px var(--color-primary-light);
+    -moz-box-shadow:
+      0px 0px 15px var(--color-secondary),
+      0 0 30px var(--color-primary-light);
+    box-shadow:
+      0px 0px 15px var(--color-secondary),
+      0 0 30px var(--color-primary-light);
+  }
+
+  .cadastro-page .cadastro-card .voltar-button {
+    border-radius: 10px;
+    width: 23rem;
+    padding: 15px 0;
+    font-size: 1.2rem;
+    transition: all 0.3s ease-in-out;
+  }
+
+    .cadastro-card .voltar-button:hover {
+    background-color: var(--color-surface);
+    color: var(--color-secondary);
+    border-color: var(--color-secondary);
+    -webkit-box-shadow:
+      0px 0px 15px var(--color-surface),
+      0 0 30px var(--color-primary-light);
+    -moz-box-shadow:
+      0px 0px 15px var(--color-surface),
+      0 0 30px var(--color-primary-light);
+    box-shadow:
+      0px 0px 15px var(--color-surface),
+      0 0 30px var(--color-primary-light);
+  }
+    .cadastro-card .have-an-account-text {
+    transition: all 0.3s ease;
+    font-size: 1.1rem;
+    text-decoration: none;
+  }
+
+    .cadastro-card .have-an-account-text .login-text:hover {
+    color: var(--color-secondary);
+    cursor: pointer;
+    text-decoration: underline;
+  }
+
+  .cadastro-card .requisitos-senha p {
+    font-size: 0.8rem;
+  }
+
+  .cadastro-card .requisitos-senha {
+    max-width: 22.800rem;
+    font-size: 1rem;
+  }
+  
+  /* Hero (imagem lateral) */
+  .cadastro-hero-page {
+    display: flex;
+    background-color: var(--color-background);
+    height: 100%;
+  }
+
+  .cadastro-hero-page .hero-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 20px 0 0 20px;
+    box-shadow: rgba(0, 0, 0, 0.3) 0px 8px 24px;
+  }
+
+  /*Estilos nas notificações mobile*/
+.Toastify__toast-container {
+  width: calc(100% - 45rem) !important;
+  left: 15.500rem !important;
+  right: 4.500rem !important;
+}
+
+}
