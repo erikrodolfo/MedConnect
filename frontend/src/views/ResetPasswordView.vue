@@ -18,19 +18,6 @@
           :right-icon="mostrarSenha ? Eye : EyeOff"
           @toggle="toggleSenha"
         />
-        <!--Input confirmar senha-->
-            <InputField
-          :type="mostrarSenha ? 'text' : 'password'"
-          v-model="confirmarSenha"
-          placeholder="Confirme sua nova senha"
-          id="novaSenha"
-          :minlength="6"
-          :required="true"
-          :left-icon="LockKeyholeIcon"
-           :right-icon="mostrarSenha ? Eye : EyeOff"
-          @toggle="toggleSenha"
-        />
-
         <!--calcular força da senha-->
         <Transition name="slide-fade">
           <div v-if="novaSenha" class="requisitos-senha">
@@ -85,10 +72,29 @@
             </ul>
           </div>
         </Transition>
-        
+        <!--Input confirmar senha-->
+        <InputField
+          :type="mostrarSenha2 ? 'text' : 'password'"
+          v-model="confirmarSenha"
+          placeholder="Confirme sua nova senha"
+          id="novaSenha"
+          :minlength="6"
+          :required="true"
+          :left-icon="LockKeyholeIcon"
+          :right-icon="mostrarSenha2 ? Eye : EyeOff"
+          @toggle="toggleSenha2"
+        />
         <!--Botão redefinir-->
-        <button class="reset-password-button" type="submit" :disabled="carregando">
-          <Loader2Icon class="spinner" v-if="carregando" :size="14" :stroke-width="2"
+        <button
+          class="reset-password-button"
+          type="submit"
+          :disabled="carregando"
+        >
+          <Loader2Icon
+            class="spinner"
+            v-if="carregando"
+            :size="14"
+            :stroke-width="2"
           />
           {{ carregando ? "Redefinindo" : "Redefinir senha" }}
         </button>
@@ -102,10 +108,10 @@ p {
   transition: all 1s ease;
 }
 
-p.senha-ok, .senha-ok svg {
+p.senha-ok,
+.senha-ok svg {
   color: var(--color-success);
 }
-
 </style>
 
 <script setup lang="ts">
@@ -114,7 +120,7 @@ import "vue3-toastify/dist/index.css";
 import { onMounted, ref, computed, watch } from "vue"; //onMounted: executar código quando o componente carrega
 import { useRouter, useRoute } from "vue-router"; //useRouter: redirecionar | useRoute: pegar o token da URL
 import api from "../services/api";
-import '@/styles/pages/auth/reset-password-page/mobile.css'
+import "@/styles/pages/auth/reset-password-page/mobile.css";
 import InputField from "../components/InputField.vue";
 import {
   Eye,
@@ -124,7 +130,7 @@ import {
   CircleX,
   CircleAlertIcon,
   CircleCheckBig,
-  Loader2Icon
+  Loader2Icon,
 } from "@lucide/vue";
 
 //variáveis
@@ -133,6 +139,7 @@ const novaSenha = ref("");
 const confirmarSenha = ref("");
 const carregando = ref(false);
 const mostrarSenha = ref(false);
+const mostrarSenha2 = ref(false);
 const temMaiuscula = ref(false);
 const temNumeros = ref(false);
 const temEspeciais = ref(false);
@@ -192,17 +199,16 @@ const resetarSenha = async () => {
       {
         skipAuthRedirect: true,
       },
-    )
-   //toast de sucesso
-      toast.success(`${data.mensagem} Redirecionando em 3 segundos...`, {
-    autoClose: 3000,
-  });
+    );
+    //toast de sucesso
+    toast.success(`${data.mensagem} Redirecionando em 3 segundos...`, {
+      autoClose: 3000,
+    });
 
-  //aguarda 3s para redirecionar
-  setTimeout(() => {
-    router.push("login")
-  }, 3000)
-  
+    //aguarda 3s para redirecionar
+    setTimeout(() => {
+      router.push("login");
+    }, 3000);
   } catch (error: any) {
     toast.error(error.response?.data?.erro || "Erro ao resetar senha");
   } finally {
@@ -217,8 +223,13 @@ watch(novaSenha, (novaSenha) => {
   tamanhoMinSenha.value = novaSenha.length >= 8;
 });
 
-/* Mostrar senha */
+/* Mostrar senha input 1 */
 const toggleSenha = () => {
   mostrarSenha.value = !mostrarSenha.value;
+};
+
+//mostrar senha input 2
+const toggleSenha2 = () => {
+  mostrarSenha2.value = !mostrarSenha2.value;
 };
 </script>
