@@ -2,7 +2,7 @@ import { createRouter, createWebHistory } from "vue-router";
 import LoginView from "../views/LoginView.vue";
 import CadastroPasso1View from "../views/CadastroPasso1View.vue";
 import CadastroPasso2View from "../views/CadastroPasso2View.vue";
-//import DashboardView from "../views/DashboardView.vue"; 
+//import DashboardView from "../views/DashboardView.vue";
 import ForgotPasswordView from "../views/ForgotPasswordView.vue";
 import ResetPasswordView from "../views/ResetPasswordView.vue";
 import EmDesenvolvimento from "../views/EmDesenvolvimento.vue";
@@ -11,7 +11,11 @@ import EmDesenvolvimento from "../views/EmDesenvolvimento.vue";
 const routes = [
   {
     path: "/",
-    redirect: "/login", //Redireciona a raiz para o login
+    redirect: () => { //se o usuário tiver um token guardado no localStorage ou no SessionStorage
+      const token =
+        localStorage.getItem("token") || sessionStorage.getItem("token");
+      return token ? "/dashboard" : "/login"; //redireciona para o dashboard, se não, redireciona pro login
+    }, 
   },
   {
     path: "/login",
@@ -51,8 +55,8 @@ const routes = [
   {
     path: "/em-desenvolvimento",
     name: "EmDesenvolvimento",
-    component: EmDesenvolvimento
-  }
+    component: EmDesenvolvimento,
+  },
 ];
 
 const router = createRouter({
@@ -62,8 +66,10 @@ const router = createRouter({
 
 //navigation guard
 router.beforeEach((to) => {
-  const token = localStorage.getItem("token") || sessionStorage.getItem("token")
-  const usuarioInfo = localStorage.getItem("usuario") || sessionStorage.getItem("token")
+  const token =
+    localStorage.getItem("token") || sessionStorage.getItem("token");
+  const usuarioInfo =
+    localStorage.getItem("usuario") || sessionStorage.getItem("usuario");
   const perfilUsuario = usuarioInfo ? JSON.parse(usuarioInfo).role : null;
 
   if (to.meta.requiresAuth && !token) {
