@@ -1,6 +1,9 @@
 <template>
   <div class="cadastro-page">
     <div class="cadastro-card">
+      <div class="logo-wrapper">
+          <img :src="MediConnectLogo" alt="logo" />
+        </div>
       <div class="barra-wrapper">
         <div class="barra1"><!--Content 1--></div>
         <div class="barra2" :style="{ '--progress': progresso + '%' }">
@@ -72,6 +75,9 @@
         </button>
       </form>
     </div>
+    <div class="cadastro-hero-page">
+      <div class="cadastro-hero-card"><img :src="MedicoImg" alt="medico" class="hero-image"></div>
+    </div>
   </div>
 </template>
 
@@ -125,25 +131,6 @@
   animation: spin 1s linear infinite;
 }
 
-.cadastro-card .voltar-button {
-  border-radius: 20px;
-  background-color: var(--color-background-alt);
-  border: 1px solid var(--color-primary);
-  box-shadow: rgba(201, 201, 201, 0.2) 0px 8px 24px;
-  color: var(--color-primary);
-  font-size: 1rem;
-  font-weight: 600;
-  padding: 12px;
-  margin: 10px 0 30px 0;
-  transition: transform 0.1s ease;
-  width: 18rem;
-}
-
-.cadastro-card .voltar-button:active {
-  transform: scale(0.95);
-  background-color: var(--color-primary-light);
-}
-
 /* Animação botão cadastrar */
 @keyframes spin {
   from {
@@ -166,9 +153,12 @@ import { useRouter } from "vue-router";
 import InputField from "../components/InputField.vue";
 import { Mailbox, MapPin, Hash, MapPinned, Building2, Loader2Icon } from "@lucide/vue";
 import api from "../services/api";
+import MedicoImg from "../assets/medico.svg";
+import MediConnectLogo from "../assets/medConnect-logo.svg"
 
 /* Arquivos de estilos */
 import "@/styles/pages/auth/cadastro-page/mobile-shared.css";
+import "@/styles/pages/auth/cadastro-page/tablet.css"
 
 const cep = ref("");
 const logradouro = ref("");
