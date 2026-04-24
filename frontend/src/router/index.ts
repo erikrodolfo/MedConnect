@@ -62,8 +62,8 @@ const router = createRouter({
 
 //navigation guard
 router.beforeEach((to) => {
-  const token = localStorage.getItem("token");
-  const usuarioInfo = localStorage.getItem("usuario");
+  const token = localStorage.getItem("token") || sessionStorage.getItem("token")
+  const usuarioInfo = localStorage.getItem("usuario") || sessionStorage.getItem("token")
   const perfilUsuario = usuarioInfo ? JSON.parse(usuarioInfo).role : null;
 
   if (to.meta.requiresAuth && !token) {
