@@ -133,9 +133,15 @@ onMounted(() => {
 });
 
 //fazer logout - leva para a tela de login
-function fazerLogout() {
+const fazerLogout = () => {
   localStorage.removeItem("token");
+  localStorage.removeItem("usuario")
+
+  sessionStorage.removeItem("token")
+  sessionStorage.removeItem("usuario")
   router.push("/login");
+
+  toast.info("Você saiu da sua conta")
 }
 </script>
 
