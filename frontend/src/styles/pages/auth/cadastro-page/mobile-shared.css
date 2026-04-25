@@ -1,8 +1,10 @@
 .cadastro-page {
   align-items: center;
-  background-image: linear-gradient(
+background-image: linear-gradient(
     160deg,
-    var(--color-primary) 50%,
+    var(--color-primary),
+    var(--color-secondary),
+    var(--color-primary-light) 50%,
     var(--color-background) 50%
   );
   background-attachment: fixed;
@@ -64,7 +66,7 @@ button {
   background-color: var(--color-primary);
   border: none;
   box-shadow: rgba(0, 0, 0, 0.2) 0px 8px 24px;
-  color: var(--color-primary-light);
+  color: var(--color-primary-lighter);
   font-size: 1rem;
   font-weight: 600;
   padding: 12px;
@@ -94,7 +96,7 @@ button {
 
 .cadastro-card .voltar-button:active {
   transform: scale(0.95);
-  background-color: var(--color-primary-light);
+  background-color: var(--color-primary-lighter);
 }
 
 /* Início Não possui conta & Cadastre-se */

@@ -81,7 +81,7 @@
     </div>
     <!--Imagem-->
     <div class="hero-page">
-      <img :src="MedicoImg" alt="Médico" class="hero-image" />
+      <img :src="BackgroundImg" alt="Médico" class="hero-image" />
     </div>
   </div>
 </template>
@@ -103,8 +103,8 @@ import '@/styles/notifications/notification-tablet.css'
 
 
 //imagens
-import MedicoImg from "../assets/medico.svg";
-import MediConnectLogo from "../assets/medConnect-logo.svg";
+import BackgroundImg from "../assets/background.png";
+import MediConnectLogo from "../assets/medconnect-logo-name.png";
 import api from "../services/api";
 
 const router = useRouter();

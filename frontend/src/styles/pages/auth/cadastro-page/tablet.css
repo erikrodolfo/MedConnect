@@ -24,7 +24,7 @@
   }
 
   .cadastro-card .logo-wrapper img {
-    width: 18rem;
+    width: 20rem;
   }
 
     /* Botões */
@@ -41,13 +41,13 @@
     background-color: var(--color-secondary);
     -webkit-box-shadow:
       0px 0px 15px var(--color-secondary),
-      0 0 30px var(--color-primary-light);
+      0 0 30px var(--color-primary-lighter);
     -moz-box-shadow:
       0px 0px 15px var(--color-secondary),
-      0 0 30px var(--color-primary-light);
+      0 0 30px var(--color-primary-lighter);
     box-shadow:
       0px 0px 15px var(--color-secondary),
-      0 0 30px var(--color-primary-light);
+      0 0 30px var(--color-primary-lighter);
   }
 
   .cadastro-page .cadastro-card .voltar-button {
@@ -64,13 +64,13 @@
     border-color: var(--color-secondary);
     -webkit-box-shadow:
       0px 0px 15px var(--color-surface),
-      0 0 30px var(--color-primary-light);
+      0 0 30px var(--color-primary-lighter);
     -moz-box-shadow:
       0px 0px 15px var(--color-surface),
-      0 0 30px var(--color-primary-light);
+      0 0 30px var(--color-primary-lighter);
     box-shadow:
       0px 0px 15px var(--color-surface),
-      0 0 30px var(--color-primary-light);
+      0 0 30px var(--color-primary-lighter);
   }
     .cadastro-card .have-an-account-text {
     transition: all 0.3s ease;

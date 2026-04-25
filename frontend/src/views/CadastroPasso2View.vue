@@ -2,7 +2,7 @@
   <div class="cadastro-page">
     <div class="cadastro-card">
       <div class="logo-wrapper">
-          <img :src="MediConnectLogo" alt="logo" />
+          <img :src="MediConnectLogoName" alt="logo" />
         </div>
       <div class="barra-wrapper">
         <div class="barra1"><!--Content 1--></div>
@@ -76,7 +76,7 @@
       </form>
     </div>
     <div class="cadastro-hero-page">
-      <div class="cadastro-hero-card"><img :src="MedicoImg" alt="medico" class="hero-image"></div>
+      <div class="cadastro-hero-card"><img :src="BackgroundImg" alt="medico" class="hero-image"></div>
     </div>
   </div>
 </template>
@@ -153,8 +153,8 @@ import { useRouter } from "vue-router";
 import InputField from "../components/InputField.vue";
 import { Mailbox, MapPin, Hash, MapPinned, Building2, Loader2Icon } from "@lucide/vue";
 import api from "../services/api";
-import MedicoImg from "../assets/medico.svg";
-import MediConnectLogo from "../assets/medConnect-logo.svg"
+import BackgroundImg from "../assets/background.png";
+import MediConnectLogoName from "../assets/medconnect-logo-name.png"
 
 /* Arquivos de estilos */
 import "@/styles/pages/auth/cadastro-page/mobile-shared.css";

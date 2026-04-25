@@ -1,6 +1,6 @@
 html, body {
   scroll-behavior: smooth;
-  background-color: var(--color-primary);
+  background-image: linear-gradient(160deg, var(--color-primary), var(--color-secondary), var(--color-primary-light));
 }
 
 #app {
