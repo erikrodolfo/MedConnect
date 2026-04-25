@@ -2,7 +2,7 @@
   <div class="cadastro-page">
     <div class="cadastro-card">
       <div class="logo-wrapper">
-          <img :src="MediConnectLogo" alt="logo" />
+          <img :src="MediConnectLogoName" alt="logo" />
         </div>
       <div class="barra-wrapper">
         <div class="barra1" :style="{ '--progress': progresso + '%' }">
@@ -114,7 +114,7 @@
     </div>
     <div class="cadastro-hero-page">
       <div class="cadastro-hero-card">
-        <img :src="MedicoImg" class="hero-image" alt="Medico">
+        <img :src="BackgroundImg" class="hero-image" alt="Medico">
       </div>
     </div>
   </div>
@@ -189,8 +189,8 @@ import {
   CircleCheckBig,
 } from "@lucide/vue";
 import InputField from "../components/InputField.vue";
-import MedicoImg from "../assets/medico.svg";
-import MediConnectLogo from "../assets/medConnect-logo.svg"
+import BackgroundImg from "../assets/background.png";
+import MediConnectLogoName from "../assets/medconnect-logo-name.png"
 
 /* Arquivos de estilos */
 import "@/styles/pages/auth/cadastro-page/mobile-shared.css";

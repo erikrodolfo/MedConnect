@@ -9,8 +9,8 @@
 @media screen and (max-width: 767px) {
   
   .Toastify__toast-container {
-    width: calc(100% - 10rem) !important;
-    left: 5rem !important;
-    right: 5rem !important;
+    width: calc(100% - 6rem) !important;
+    left: 3rem !important;
+    right: 3rem !important;
   }
 }

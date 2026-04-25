@@ -115,12 +115,12 @@ const computedType = computed(() => {
 /* Input - Mobile (padrão) */
 input {
   background-color: var(--color-surface);
-  color: var(--color-text-secondary);
+  color: var(--color-text-primary);
   border: 1px solid var(--color-surface);
   border-radius: 8px;
   box-shadow: rgba(0, 0, 0, 0.04) 0px 3px 5px;
   font-family: var(--primary-font);
-  font-size: 1.1rem;
+  font-size: 1rem;
   padding: 12px 12px 12px 2.25rem;
   margin: 10px 1rem;
   width: 14.9rem;
@@ -175,19 +175,19 @@ input:-webkit-autofill:hover,
 input:-webkit-autofill:focus,
 input:-webkit-autofill:active {
   -webkit-box-shadow: 0 0 0 30px var(--color-surface) inset !important;
-  -webkit-text-fill-color: var(--color-text-secondary) !important;
+  -webkit-text-fill-color: var(--color-text-primary) !important;
   font-family: var(--primary-font) !important;
-  font-size: 1.1rem !important;
-  caret-color: var(--color-text-secondary) !important;
+  font-size: 1rem !important;
+  caret-color: var(--color-text-primary) !important;
 }
 
 /* ========================================
    TABLET (768px+)
    ======================================== */
-@media screen and (min-width: 768px) and (min-height: 600px) {
+@media screen and (min-width: 768px) and (max-width: 1299px) {
   input {
     width: 20rem;
-    padding: 14px 15px 14px 2rem;
+    padding: 13px 15px 13px 2rem;
     margin: 10px 10px;
     font-size: 1.2rem;
     transition: all 0.3s ease-in-out;
@@ -202,21 +202,32 @@ input:-webkit-autofill:active {
 
   .input-icon {
     left: 1.1rem;
-    transition: color 0.6s ease-in-out;
+    transition: color 0.3s ease-in-out;
   }
 
   .toggle-icon-password {
     right: 1.1rem;
+  }
+  /* Autofill do navegador */
+  input:-webkit-autofill,
+  input:-webkit-autofill:hover,
+  input:-webkit-autofill:focus,
+  input:-webkit-autofill:active {
+    -webkit-box-shadow: 0 0 0 30px var(--color-surface) inset !important;
+    -webkit-text-fill-color: var(--color-text-primary) !important;
+    font-family: var(--primary-font) !important;
+    font-size: 1.2rem !important;
+    caret-color: var(--color-text-primary) !important;
   }
 }
 
 /* ========================================
    DESKTOP (1300px+)
    ======================================== */
-@media screen and (min-width: 1300px) and (min-height: 600px) {
+@media screen and (min-width: 1300px) {
   input {
     width: 20.5rem;
-    padding: 20px 15px 20px 2.3rem;
+    padding: 15px 15px 15px 2.3rem;
     margin: 10px 10px;
     transition: all 0.3s ease-in-out;
     font-size: 1.2rem;
@@ -231,11 +242,23 @@ input:-webkit-autofill:active {
 
   .input-icon {
     left: 1.3rem;
-    transition: color 0.6s ease-in-out;
+    transition: color 0.3s ease-in-out;
   }
 
   .toggle-icon-password {
     right: 1.3rem;
+  }
+
+  /* Autofill do navegador */
+  input:-webkit-autofill,
+  input:-webkit-autofill:hover,
+  input:-webkit-autofill:focus,
+  input:-webkit-autofill:active {
+    -webkit-box-shadow: 0 0 0 30px var(--color-surface) inset !important;
+    -webkit-text-fill-color: var(--color-text-primary) !important;
+    font-family: var(--primary-font) !important;
+    font-size: 1.2rem !important;
+    caret-color: var(--color-text-primary) !important;
   }
 }
 </style>
