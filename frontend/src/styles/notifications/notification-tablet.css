@@ -1,0 +1,9 @@
+@media screen and (min-width: 768px) and (min-height: 600px) {
+  .Toastify__toast-container.Toastify__toast-container {
+    left: 25% !important;
+    right: auto !important;
+    transform: translateX(-50%) !important;
+    width: 18rem !important;
+  }
+}
+
