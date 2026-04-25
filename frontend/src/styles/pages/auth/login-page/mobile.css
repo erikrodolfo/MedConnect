@@ -170,6 +170,13 @@ button {
   color: var(--color-primary-dark);
 }
 
+/* Notificações */
+.Toastify__toast-container {
+  width: 10rem !important;
+  left: 5rem !important;
+  right: 5rem !important;
+}
+
 /* Escondendo elementos */
 
 .hero-page,

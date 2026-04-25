@@ -97,6 +97,10 @@ import InputField from "../components/InputField.vue";
 import "@/styles/pages/auth/login-page/mobile.css";
 import "@/styles/pages/auth/login-page/tablet.css";
 import "@/styles/pages/auth/login-page/desktop.css";
+// No <script> da view
+import '@/styles/notifications/index.css';
+import '@/styles/notifications/notification-tablet.css'
+
 
 //imagens
 import MedicoImg from "../assets/medico.svg";
