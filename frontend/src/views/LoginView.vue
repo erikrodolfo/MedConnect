@@ -177,6 +177,12 @@ const toggleSenha = () => {
   gap: 15px;
   align-items: center;
 }
+
+.remember-forgot-wrapper {
+  width: 100%;
+  display: flex;
+  justify-content: left;
+}
 /* Container do BaseLink */
 /* não possui conta */
 .baselink-container {
