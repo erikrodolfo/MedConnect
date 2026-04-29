@@ -1,23 +1,114 @@
+<!--Inicio Script-->
+<script setup lang="ts">
+//biblioteca notificações
+import { toast } from "vue3-toastify";
+import "vue3-toastify/dist/index.css";
+
+//imports vue
+import { ref, computed } from "vue";
+import { useRouter } from "vue-router";
+
+//lucide icons
+import { Mail, LockKeyholeIcon, Eye, EyeOff, User } from "@lucide/vue";
+
+//layouts
+import AuthLayout from "../layouts/AuthLayout.vue";
+import AuthProgress from "../layouts/AuthProgress.vue";
+import AuthHeader from "../layouts/AuthHeader.vue";
+import AuthCard from "../layouts/AuthCard.vue";
+
+//components
+import InputField from "../components/ui/InputField.vue";
+import BaseButton from "../components/ui/BaseButton.vue";
+import BaseLink from "../components/ui/BaseLink.vue";
+import PasswordRequirements from "../components/ui/PasswordRequirements.vue";
+
+//imagens
+import MediConnectLogo from "../assets/medconnect-logo-name.png";
+
+//variáveis reativas
+const nome = ref("");
+const email = ref("");
+const senha = ref("");
+const mostrarSenha = ref(false);
+const senhaValida = ref(false);
+
+//roteador
+const router = useRouter();
+
+//função cadastrar usuario
+const cadastrarUsuario = () => {
+  if (!nome.value || !email.value || !senha.value) {
+    toast.error("Preenchas todos os campos.");
+    return;
+  }
+
+  //validando se todos os requisitos estão sendo cumpridos
+  if (!senhaValida.value) {
+    toast.warning("A senha precisa cumprir todos os requisitos.");
+    return;
+  }
+
+  //validando o email
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailRegex.test(email.value)) {
+    toast.error("Digite um email válido");
+    return;
+  }
+
+  //pegando todos os dados
+  const dados = {
+    nome: nome.value,
+    email: email.value,
+    senha: senha.value,
+  };
+
+  //eviando os dados para o cadastro passo 2
+  router.push({
+    path: "/cadastro-step2",
+    state: {
+      ...dados, //espalhando os dados com o spread(...)
+    },
+  });
+};
+
+//função mostrar senha
+const toggleSenha = () => {
+  mostrarSenha.value = !mostrarSenha.value;
+};
+
+//funçãopara barra de progresso reativa
+const progresso = computed(() => {
+  //pegando e validando os dados
+  const campos = [
+    nome.value.trim() !== "",
+    email.value.includes("@"),
+    senhaValida.value,
+  ];
+
+  const preenchidos = campos.filter(Boolean).length; //filtra apenas os valores verdadeiros e conta quantos são
+
+  return (preenchidos / campos.length) * 100;
+});
+</script>
+<!-- Fim script -->
+
+<!-- Início Template -->
 <template>
-  <div class="cadastro-page">
-    <div class="cadastro-card">
-      <div class="logo-wrapper">
-          <img :src="MediConnectLogoName" alt="logo" />
-        </div>
-      <div class="barra-wrapper">
-        <div class="barra1" :style="{ '--progress': progresso + '%' }">
-          <!--Content 1-->
-        </div>
-        <div class="barra2">
-          <!--Content 2-->
-        </div>
-      </div>
-      <h1>Criar conta</h1>
-      <p class="subtittle">
-        Crie sua conta para começar a agendar suas consultas
-      </p>
-      <form @submit.prevent="cadastrarUsuario" class="cadastro-form">
-        <div class="input-container">
+  <AuthLayout>
+    <AuthCard>
+      <AuthProgress :step="1" :progress="progresso" />
+      <AuthHeader
+        title="Criar conta"
+        subtitle="Crie sua conta para começar a agendar suas consultas"
+      >
+        <!-- Logo -->
+        <template #logo>
+          <img :src="MediConnectLogo" alt="MedConnect Logo" />
+        </template>
+      </AuthHeader>
+      <form class="auth-form" @submit.prevent="cadastrarUsuario">
+        <div class="form-container">
           <!--Input nome-->
           <InputField
             v-model="nome"
@@ -55,227 +146,36 @@
             @toggle="toggleSenha"
           />
           <!--calcular força da senha-->
-          <Transition name="slide-fade">
-            <div v-if="senha" class="requisitos-senha">
-              <p :class="{ 'senha-ok': senhaValida }">
-                <component
-                  :is="senhaValida ? CircleCheckBig : CircleAlertIcon"
-                  :size="14"
-                  :stroke-width="2"
-                />
-                {{ !senhaValida ? 'Sua senha deve atender a todos os requisitos abaixo.' : 'Sua senha atende a todos os requisitos.' }}
-              </p>
-              <ul>
-                <!--Tem maiúscula-->
-                <li :class="{ valido: temMaiuscula }">
-                  <component
-                    :is="temMaiuscula ? CircleCheck : CircleX"
-                    :size="14"
-                  />
-                  1 letra maiúscula
-                </li>
-
-                <!--Tem número-->
-                <li :class="{ valido: temNumeros }">
-                  <component
-                    :is="temNumeros ? CircleCheck : CircleX"
-                    :size="14"
-                  />
-                  1 número
-                </li>
-
-                <!--Tem caractere especial-->
-                <li :class="{ valido: temEspeciais }">
-                  <component
-                    :is="temEspeciais ? CircleCheck : CircleX"
-                    :size="14"
-                  />
-                  1 caractere especial
-                </li>
-
-                <!--Mínimo 8 caracteres-->
-                <li :class="{ valido: tamanhoMinSenha }">
-                  <component
-                    :is="tamanhoMinSenha ? CircleCheck : CircleX"
-                    :size="14"
-                  />
-                  Mínimo 8 caracteres
-                </li>
-              </ul>
-            </div>
-          </Transition>
+          <PasswordRequirements
+            :model-value="senha"
+            @valid="senhaValida = $event"
+          />
+          <!-- Botão Entrar -->
+          <BaseButton type="submit">Proximo</BaseButton>
+          <!--Já tem login-->
+          <p class="have-an-account-text">
+            Já possui login?
+            <BaseLink to="/login">Entrar</BaseLink>
+          </p>
         </div>
-        <button class="cadastro-button" type="submit">Próximo</button>
       </form>
-      <p class="have-an-account-text">
-        Já possui login?
-        <button @click="entrar" class="login-text" id="entrar">Entrar</button>
-      </p>
-    </div>
-    <div class="cadastro-hero-page">
-      <div class="cadastro-hero-card">
-        <img :src="BackgroundImg" class="hero-image" alt="Medico">
-      </div>
-    </div>
-  </div>
+    </AuthCard>
+  </AuthLayout>
 </template>
+<!-- Fim Template -->
 
+<!-- Início Styles -->
 <style scoped>
-.cadastro-card .barra-wrapper {
-  width: 87%;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  margin: 0 auto 10px auto;
-  padding-top: 20px;
-  gap: 7px;
+.auth-form {
+  width: 100%;
 }
 
-.barra-wrapper .barra1 {
-  width: auto;
-  height: 7px;
-  background-color: var(--color-primary-light);
-  border-radius: 10px;
-  animation: progress-bar 1s forwards;
-  background-size: 200% 100%;
-  border-radius: 10px;
-  position: relative;
-  overflow: hidden;
-}
-
-.barra-wrapper .barra1::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  height: 100%;
-  width: var(--progress, 0%);
-  background-color: var(--color-primary);
-  transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-  border-radius: 10px;
-}
-
-.barra-wrapper div:nth-child(2) {
-  width: auto;
-  height: 7px;
-  background-color: var(--color-primary-light);
-  border-radius: 10px;
-}
-
-p {
-  transition: all 1s ease;
-}
-
-p.senha-ok, .senha-ok svg {
-  color: var(--color-success);
+.form-container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: 15px;
+  align-items: center;
 }
 </style>
-
-<!--Inicio Script-->
-
-<script setup lang="ts">
-import { toast } from "vue3-toastify";
-import 'vue3-toastify/dist/index.css'
-import { ref, watch, computed } from "vue";
-import { useRouter } from "vue-router";
-import {
-  Mail,
-  LockKeyholeIcon,
-  Eye,
-  EyeOff,
-  User,
-  CircleCheck,
-  CircleX,
-  CircleAlertIcon,
-  CircleCheckBig,
-} from "@lucide/vue";
-import InputField from "../components/InputField.vue";
-import BackgroundImg from "../assets/background.png";
-import MediConnectLogoName from "../assets/medconnect-logo-name.png"
-
-/* Arquivos de estilos */
-import "@/styles/pages/auth/cadastro-page/mobile-shared.css";
-import "@/styles/pages/auth/cadastro-page/tablet.css"
-
-const nome = ref("");
-const email = ref("");
-const senha = ref("");
-const mostrarSenha = ref(false);
-const temMaiuscula = ref(false);
-const temNumeros = ref(false);
-const temEspeciais = ref(false);
-const tamanhoMinSenha = ref(false);
-
-//juntando todas as validações com o computed
-const senhaValida = computed(() => {
-  return (
-    temMaiuscula.value &&
-    temNumeros.value &&
-    temEspeciais.value &&
-    tamanhoMinSenha.value
-  );
-});
-const router = useRouter();
-
-//função cadastrar usuario
-const cadastrarUsuario = () => {
-  if (!nome.value || !email.value || !senha.value) {
-    toast.error("Preenchas todos os campos.");
-    return;
-  }
-
-  //validando se todos os requisitos estão sendo cumpridos
-  if (!senhaValida.value) {
-    toast.warning("A senha precisa cumprir todos os requisitos.");
-    return;
-  }
-
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  if (!emailRegex.test(email.value)) {
-    toast.error("Digite um email válido");
-    return;
-  }
-
-  const dados = {
-    nome: nome.value,
-    email: email.value,
-    senha: senha.value,
-  };
-
-  router.push({
-    path: "/cadastro-step2",
-    state: {
-      ...dados, //espalhando os dados com o spread(...)
-    },
-  });
-};
-
-//função mostrar senha
-const toggleSenha = () => {
-  mostrarSenha.value = !mostrarSenha.value;
-};
-
-//funçãopara barra de progresso reativa
-const progresso = computed(() => {
-
-  //pegando e validando os dados
-  const campos = [
-    nome.value.trim() !== '',
-   email.value.includes("@"),
-   senhaValida.value]
-
-  const preenchidos = campos.filter(Boolean).length //filtra apenas os valores verdadeiros e conta quantos são
-
-  return (preenchidos / campos.length) * 100
-}
-)
-
-watch(senha, (novaSenha) => {
-  temMaiuscula.value = /[A-Z]/.test(novaSenha);
-  temNumeros.value = /[0-9]/.test(novaSenha);
-  temEspeciais.value = /[!@#$%^&*]/.test(novaSenha);
-  tamanhoMinSenha.value = novaSenha.length >= 8;
-});
-
-//rota para entrar na tela de login
-const entrar = () => router.push("/login");
-</script>
+<!-- Fim Styles -->

@@ -22,3 +22,9 @@
   opacity: 0;
 }
 </style>
+
+<script setup lang="ts">
+import { useTheme } from './composables/useTheme';
+
+useTheme() //inicializa globalmente
+</script>

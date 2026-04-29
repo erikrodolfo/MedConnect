@@ -1,179 +1,57 @@
-<template>
-  <div class="cadastro-page">
-    <div class="cadastro-card">
-      <div class="logo-wrapper">
-          <img :src="MediConnectLogoName" alt="logo" />
-        </div>
-      <div class="barra-wrapper">
-        <div class="barra1"><!--Content 1--></div>
-        <div class="barra2" :style="{ '--progress': progresso + '%' }">
-          <!--Content 2-->
-        </div>
-      </div>
-      <h1>Endereço</h1>
-      <p class="subtittle">
-        Crie sua conta para começar a agendar suas consultas
-      </p>
-      <form @submit.prevent="cadastrarUsuario" class="cadastro-form">
-        <div class="input-container">
-          <!--Input CEP-->
-          <InputField
-            v-model="cep"
-            type="text"
-            placeholder="Cep"
-            name="cep"
-            id="cep"
-            @blur="buscarCep"
-            :left-icon="Mailbox"
-          />
-          <!--Input logradouro-->
-          <InputField
-            v-model="logradouro"
-            type="text"
-            id="logradouro"
-            name="logradouro"
-            :leftIcon="MapPin"
-            placeholder="Logradouro"
-          />
-          <!--Input número-->
-          <InputField
-            v-model="numero"
-            type="text"
-            id="numero"
-            name="numero"
-            :leftIcon="Hash"
-            placeholder="Número"
-          />
-
-          <!--Input bairro-->
-          <InputField
-            v-model="bairro"
-            type="text"
-            id="bairro"
-            name="bairro"
-            :leftIcon="MapPinned"
-            placeholder="Bairro"
-          />
-          <!--Input cidade-->
-          <InputField
-            v-model="cidade"
-            type="text"
-            id="cidade"
-            name="cidade"
-            :leftIcon="Building2"
-            :readonly="true"
-            placeholder="Cidade"
-          />
-        </div>
-        <button class="cadastro-button" type="submit" :disabled="carregando">
-          <Loader2Icon v-if="carregando" :size="14" stroke-width="2" class="spinner"/>
-          {{ carregando ? 'Cadastrando' : 'Cadastrar' }}
-        </button>
-
-        <button class="voltar-button" type="button" @click="voltar">
-          Voltar
-        </button>
-      </form>
-    </div>
-    <div class="cadastro-hero-page">
-      <div class="cadastro-hero-card"><img :src="BackgroundImg" alt="medico" class="hero-image"></div>
-    </div>
-  </div>
-</template>
-
-<!--Início Styles-->
-<style scoped>
-.cadastro-card .barra-wrapper {
-  width: 87%;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  margin: 0 auto 10px auto;
-  padding-top: 20px;
-  gap: 5px;
-}
-
-.barra-wrapper .barra1 {
-  width: auto;
-  height: 7px;
-  background-color: var(--color-primary);
-  border-radius: 10px;
-}
-
-.barra-wrapper .barra2 {
-  width: auto;
-  height: 7px;
-  background-color: var(--color-primary-light);
-  border-radius: 10px;
-  position: relative;
-  overflow: hidden;
-  background-size: 200% 100%;
-}
-
-.barra-wrapper .barra2::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  height: 100%;
-  width: var(--progress, 0%);
-  background-color: var(--color-primary);
-  transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-  border-radius: 10px;
-}
-
-.cadastro-card .cadastro-button:disabled {
-  opacity: 0.8;
-  cursor: not-allowed;
-  padding: 11px;
-}
-
-.cadastro-card .spinner {
-  animation: spin 1s linear infinite;
-}
-
-/* Animação botão cadastrar */
-@keyframes spin {
-  from {
-    transform: rotate(0deg);
-  }
-
-  to {
-    transform: rotate(360deg);
-  }
-}
-</style>
-
 <!--Início Script-->
 
 <script setup lang="ts">
+//biblioteca de notificações
 import { toast } from "vue3-toastify";
 import "vue3-toastify/dist/index.css";
+
+//imports vue
 import { ref, onMounted, computed } from "vue";
 import { useRouter } from "vue-router";
-import InputField from "../components/InputField.vue";
-import { Mailbox, MapPin, Hash, MapPinned, Building2, Loader2Icon } from "@lucide/vue";
+
+//Layouts
+import AuthLayout from "../layouts/AuthLayout.vue";
+import AuthCard from "../layouts/AuthCard.vue";
+import AuthProgress from "../layouts/AuthProgress.vue";
+import AuthHeader from "../layouts/AuthHeader.vue";
+import BaseButton from "../components/ui/BaseButton.vue";
+
+//components
+import InputField from "../components/ui/InputField.vue";
+
+//Lucide icons
+import {
+  Mailbox,
+  MapPin,
+  Hash,
+  MapPinned,
+  Building2,
+  Loader2Icon,
+} from "@lucide/vue";
+
+//API backend
 import api from "../services/api";
-import BackgroundImg from "../assets/background.png";
-import MediConnectLogoName from "../assets/medconnect-logo-name.png"
 
-/* Arquivos de estilos */
-import "@/styles/pages/auth/cadastro-page/mobile-shared.css";
-import "@/styles/pages/auth/cadastro-page/tablet.css"
+//Imagens
+import MedConnectLogo from '@/assets/medconnect-logo-name.png'
 
+//variáveis reativas
 const cep = ref("");
 const logradouro = ref("");
 const numero = ref("");
 const bairro = ref("");
 const cidade = ref("");
-const carregando = ref(false)
+const carregando = ref(false);
 const dadosPasso1 = ref({
   nome: "",
   email: "",
   senha: "",
 });
 
+//roetador
 const router = useRouter(); //isso precisa vir antes de tudo
 
+//pegando os dados da tela anterior
 onMounted(() => {
   if (history.state && history.state.nome) {
     dadosPasso1.value = {
@@ -214,7 +92,7 @@ const buscarCep = async () => {
 
 //função cadastrar usuario
 const cadastrarUsuario = async () => {
-  carregando.value = true
+  carregando.value = true;
   if (
     !logradouro.value ||
     !numero.value ||
@@ -248,12 +126,12 @@ const cadastrarUsuario = async () => {
       toast.error("Erro de conexão com o servidor");
     }
   } finally {
-    carregando.value = false
+    carregando.value = false;
   }
 };
 
 //função para barra de progresso reativa
-const progresso = computed(() => {
+const progresso2 = computed(() => {
   const campos = [
     cep.value,
     logradouro.value,
@@ -264,7 +142,11 @@ const progresso = computed(() => {
 
   const preenchidos = campos.filter((v) => v.trim() !== "").length;
 
-  return (preenchidos / campos.length) * 100;
+  const resultado = (preenchidos / campos.length) * 100;
+
+  console.log("progresso:", resultado)
+
+  return resultado
 });
 
 //função voltar
@@ -272,3 +154,105 @@ const voltar = () => {
   router.push("/cadastro-step1");
 };
 </script>
+
+<template>
+  <AuthLayout>
+    <AuthCard>
+      <AuthProgress :step="2" :progress="progresso2" />
+      <AuthHeader
+        title="Endereço"
+        subtitle="Crie sua conta para começar a agendar suas consultas">
+      
+        <template #logo>
+          <img :src="MedConnectLogo" alt="MedConnect Logo">
+        </template>
+      </AuthHeader>
+      <!-- Formulário -->
+      <form class="auth-form" @submit.prevent="cadastrarUsuario">
+        <div class="form-container">
+          <!--Input CEP-->
+          <InputField
+            v-model="cep"
+            type="text"
+            placeholder="Cep"
+            name="cep"
+            id="cep"
+            @blur="buscarCep"
+            :left-icon="Mailbox"
+          />
+          <!--Input logradouro-->
+          <InputField
+            v-model="logradouro"
+            type="text"
+            id="logradouro"
+            name="logradouro"
+            :left-icon="MapPin"
+            placeholder="Logradouro"
+          />
+          <!--Input número-->
+          <InputField
+            v-model="numero"
+            type="text"
+            id="numero"
+            name="numero"
+            :left-icon="Hash"
+            placeholder="Número"
+          />
+          <!--Input bairro-->
+          <InputField
+            v-model="bairro"
+            type="text"
+            id="bairro"
+            name="bairro"
+            :left-icon="MapPinned"
+            placeholder="Bairro"
+          />
+          <!--Input cidade-->
+          <InputField
+            v-model="cidade"
+            type="text"
+            id="cidade"
+            name="cidade"
+            :left-icon="Building2"
+            :readonly="true"
+            placeholder="Cidade"
+          />
+          <!-- Botão Cadastrar -->
+          <BaseButton type="submit" :loading="carregando">
+            <Loader2Icon
+              v-if="carregando"
+              :size="14"
+              stroke-width="2"
+              class="spinner"
+            />
+            {{ carregando ? "Cadastrando" : "Cadastrar" }}
+          </BaseButton>
+          <BaseButton type="button" @click="voltar" class="button-voltar"
+            >Voltar</BaseButton
+          >
+        </div>
+      </form>
+    </AuthCard>
+  </AuthLayout>
+</template>
+
+<!--Início Styles-->
+<style scoped>
+.auth-form {
+  width: 100%;
+}
+
+.form-container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: 15px;
+  align-items: center;
+}
+
+.button-voltar {
+  background-image: linear-gradient(45deg, var(--color-background), var(--color-background-alt));
+  color: var(--color-primary);
+  border: 1px solid var(--color-primary);
+}
+</style>

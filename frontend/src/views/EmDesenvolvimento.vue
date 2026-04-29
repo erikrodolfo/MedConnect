@@ -45,6 +45,7 @@ const voltar = () => {
   max-width: 21rem;
   width: 100%;
   box-shadow: rgba(0, 0, 0, 0.2) 0px 8px 24px;
+  padding: 20px;
 }
 
 .icon {

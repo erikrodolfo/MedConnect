@@ -3,6 +3,10 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!--Ajuda o navegador a renderizar melhgor inputs, scrollbars, etc-->
+    <meta name="color-schema" content="light dark"> 
+
     <!--Favicon Apple-->
     <link
       rel="apple-touch-icon"
@@ -28,6 +32,24 @@
       rel="stylesheet"
     />
     <!--fonts -->
+
+     <!--Função auto-executável para não dar flash na trtoca de temas-->
+    <script>
+  (function () {
+    const saved = localStorage.getItem('theme');
+
+    let theme;
+
+    if (saved === 'light' || saved === 'dark') {
+      theme = saved;
+    } else {
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      theme = prefersDark ? 'dark' : 'light';
+    }
+
+    document.documentElement.setAttribute('data-theme', theme);
+  })();
+</script>
 
     <title>MedConnect</title>
   </head>

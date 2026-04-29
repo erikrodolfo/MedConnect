@@ -110,6 +110,7 @@ const computedType = computed(() => {
 .input-wrapper {
   position: relative;
   width: 100%;
+  margin: 0;
 }
 
 /* Input - Mobile (padrão) */
@@ -122,8 +123,9 @@ input {
   font-family: var(--primary-font);
   font-size: 1rem;
   padding: 12px 12px 12px 2.25rem;
-  margin: 10px 1rem;
-  width: 14.9rem;
+  box-sizing: border-box;
+  margin: 0;
+  width: 100%;
 }
 
 input:focus {
@@ -142,7 +144,7 @@ input::placeholder {
 .input-icon {
   color: var(--color-text-secondary);
   position: absolute;
-  left: 1.6rem;
+  left: 0.6rem;
   top: 50%;
   transform: translateY(-50%);
   transition: all 0.3s ease;
@@ -153,7 +155,7 @@ input::placeholder {
 .toggle-icon-password {
   color: var(--color-text-secondary);
   position: absolute;
-  right: 1.6rem;
+  right: 0.6rem;
   top: 50%;
   transform: translateY(-50%);
   transition: all 0.3s ease;
@@ -185,10 +187,13 @@ input:-webkit-autofill:active {
    TABLET (768px+)
    ======================================== */
 @media screen and (min-width: 768px) and (max-width: 1299px) {
+  .input-wrapper {
+    width: 100%;
+    margin: 0;
+  }
+
   input {
-    width: 20rem;
-    padding: 13px 15px 13px 2rem;
-    margin: 10px 10px;
+    padding: 13px 15px 13px 2.4rem;
     font-size: 1.2rem;
     transition: all 0.3s ease-in-out;
   }
@@ -201,12 +206,12 @@ input:-webkit-autofill:active {
   }
 
   .input-icon {
-    left: 1.1rem;
+    left: 0.7rem;
     transition: color 0.3s ease-in-out;
   }
 
   .toggle-icon-password {
-    right: 1.1rem;
+    right: 0.7rem;
   }
   /* Autofill do navegador */
   input:-webkit-autofill,
@@ -225,10 +230,13 @@ input:-webkit-autofill:active {
    DESKTOP (1300px+)
    ======================================== */
 @media screen and (min-width: 1300px) {
+  .input-wrapper {
+    width: 100%;
+    margin: 0;
+  }
+
   input {
-    width: 20.5rem;
     padding: 15px 15px 15px 2.3rem;
-    margin: 10px 10px;
     transition: all 0.3s ease-in-out;
     font-size: 1.2rem;
   }
@@ -241,12 +249,12 @@ input:-webkit-autofill:active {
   }
 
   .input-icon {
-    left: 1.3rem;
+    left: 0.7rem;
     transition: color 0.3s ease-in-out;
   }
 
   .toggle-icon-password {
-    right: 1.3rem;
+    right: 0.7em;
   }
 
   /* Autofill do navegador */

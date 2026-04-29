@@ -1,139 +1,106 @@
 <template>
-  <div class="reset-password-page">
-    <div class="reset-password-card">
-      <h1>Crie sua nova senha</h1>
-      <p class="subtittle">
-        Digite e confirme sua nova senha para acessar sua conta.
-      </p>
-      <form class="reset-password-form" @submit.prevent="resetarSenha">
-        <!--Input nova senha-->
-        <InputField
-          :type="mostrarSenha ? 'text' : 'password'"
-          v-model="novaSenha"
-          placeholder="Digite sua nova senha"
-          id="novaSenha"
-          :minlength="6"
-          :required="true"
-          :left-icon="LockKeyholeIcon"
-          :right-icon="mostrarSenha ? Eye : EyeOff"
-          @toggle="toggleSenha"
-        />
-        <!--calcular força da senha-->
-        <Transition name="slide-fade">
-          <div v-if="novaSenha" class="requisitos-senha">
-            <p :class="{ 'senha-ok': senhaValida }">
-              <component
-                :is="senhaValida ? CircleCheckBig : CircleAlertIcon"
-                :size="14"
-                :stroke-width="2"
-              />
-              {{
-                !senhaValida
-                  ? "Sua senha deve atender a todos os requisitos abaixo."
-                  : "Sua senha atende a todos os requisitos."
-              }}
-            </p>
-            <ul>
-              <!--Tem maiúscula-->
-              <li :class="{ valido: temMaiuscula }">
-                <component
-                  :is="temMaiuscula ? CircleCheck : CircleX"
-                  :size="14"
-                />
-                1 letra maiúscula
-              </li>
+  <AuthLayout>
+    <AuthCard>
+      <AuthHeader title="Crie sua nova senha" subtitle="Digite e confirme sua nova senha para acessar sua conta">
 
-              <!--Tem número-->
-              <li :class="{ valido: temNumeros }">
-                <component
-                  :is="temNumeros ? CircleCheck : CircleX"
-                  :size="14"
-                />
-                1 número
-              </li>
-
-              <!--Tem caractere especial-->
-              <li :class="{ valido: temEspeciais }">
-                <component
-                  :is="temEspeciais ? CircleCheck : CircleX"
-                  :size="14"
-                />
-                1 caractere especial
-              </li>
-
-              <!--Mínimo 8 caracteres-->
-              <li :class="{ valido: tamanhoMinSenha }">
-                <component
-                  :is="tamanhoMinSenha ? CircleCheck : CircleX"
-                  :size="14"
-                />
-                Mínimo 8 caracteres
-              </li>
-            </ul>
-          </div>
-        </Transition>
-        <!--Input confirmar senha-->
-        <InputField
-          :type="mostrarSenha2 ? 'text' : 'password'"
-          v-model="confirmarSenha"
-          placeholder="Confirme sua nova senha"
-          id="novaSenha"
-          :minlength="6"
-          :required="true"
-          :left-icon="LockKeyholeIcon"
-          :right-icon="mostrarSenha2 ? Eye : EyeOff"
-          @toggle="toggleSenha2"
-        />
-        <!--Botão redefinir-->
-        <button
-          class="reset-password-button"
-          type="submit"
-          :disabled="carregando"
-        >
-          <Loader2Icon
-            class="spinner"
-            v-if="carregando"
-            :size="14"
-            :stroke-width="2"
+        <template #logo>
+          <img :src="MedConnectLogo" alt="MedConnect Logo">
+        </template>
+      </AuthHeader>
+      <form class="auth-form" @submit.prevent="resetarSenha">
+        <div class="form-container">
+          <!--Input nova senha-->
+          <InputField
+            :type="mostrarSenha ? 'text' : 'password'"
+            v-model="novaSenha"
+            placeholder="Digite sua nova senha"
+            id="novaSenha"
+            :minlength="6"
+            :required="true"
+            :left-icon="LockKeyholeIcon"
+            :right-icon="mostrarSenha ? Eye : EyeOff"
+            @toggle="toggleSenha"
           />
-          {{ carregando ? "Redefinindo" : "Redefinir senha" }}
-        </button>
+          <!--calcular força da senha-->
+          <PasswordRequirements :model-value="novaSenha" @valid="senhaValida = $event" />
+          <!--Input confirmar senha-->
+          <InputField
+            :type="mostrarSenha2 ? 'text' : 'password'"
+            v-model="confirmarSenha"
+            placeholder="Confirme sua nova senha"
+            id="novaSenha"
+            :minlength="6"
+            :required="true"
+            :left-icon="LockKeyholeIcon"
+            :right-icon="mostrarSenha2 ? Eye : EyeOff"
+            @toggle="toggleSenha2"
+          />
+          <!--Botão redefinir-->
+          <BaseButton type="submit" :loading="carregando">
+           <Loader2Icon
+              class="spinner"
+              v-if="carregando"
+              :size="14"
+              :stroke-width="2"
+            />
+            {{ carregando ? "Redefinindo" : "Redefinir senha" }}
+          </BaseButton>
+        </div>
       </form>
-    </div>
-  </div>
+    </AuthCard>
+  </AuthLayout>
 </template>
 
 <style scoped>
-p {
-  transition: all 1s ease;
+.auth-form {
+  width: 100%;
 }
 
-p.senha-ok,
-.senha-ok svg {
-  color: var(--color-success);
+.form-container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: 15px;
+  align-items: center;
 }
 </style>
 
 <script setup lang="ts">
+//Biblioteca notificações
 import { toast } from "vue3-toastify";
 import "vue3-toastify/dist/index.css";
-import { onMounted, ref, computed, watch } from "vue"; //onMounted: executar código quando o componente carrega
+
+//imports vue
+import { onMounted, ref, computed} from "vue"; //onMounted: executar código quando o componente carrega
+
+//imports vue-router
 import { useRouter, useRoute } from "vue-router"; //useRouter: redirecionar | useRoute: pegar o token da URL
+
+//api backend
 import api from "../services/api";
-import "@/styles/pages/auth/reset-password-page/mobile.css";
-import InputField from "../components/InputField.vue";
+
+//Layouts
+import AuthLayout from "../layouts/AuthLayout.vue";
+import AuthCard from "../layouts/AuthCard.vue";
+import AuthHeader from "../layouts/AuthHeader.vue";
+
+//components
+import InputField from "../components/ui/InputField.vue";
+import PasswordRequirements from "../components/ui/PasswordRequirements.vue";
+import BaseButton from "../components/ui/BaseButton.vue";
+
+//Lucide icons
 import {
   Eye,
   EyeOff,
   LockKeyholeIcon,
-  CircleCheck,
-  CircleX,
-  CircleAlertIcon,
-  CircleCheckBig,
   Loader2Icon,
 } from "@lucide/vue";
 
-//variáveis
+//imagens
+import MedConnectLogo from '@/assets/medconnect-logo-name.png'
+
+//variáveis reativas
 const token = ref("");
 const novaSenha = ref("");
 const confirmarSenha = ref("");
@@ -215,13 +182,6 @@ const resetarSenha = async () => {
     carregando.value = false;
   }
 };
-
-watch(novaSenha, (novaSenha) => {
-  temMaiuscula.value = /[A-Z]/.test(novaSenha);
-  temNumeros.value = /[0-9]/.test(novaSenha);
-  temEspeciais.value = /[!@#$%^&*]/.test(novaSenha);
-  tamanhoMinSenha.value = novaSenha.length >= 8;
-});
 
 /* Mostrar senha input 1 */
 const toggleSenha = () => {
