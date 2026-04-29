@@ -28,6 +28,7 @@ import MedConnectLogo from '@/assets/medconnect-logo-name.png'
 //variáveis reativas
 const email = ref("");
 const carregando = ref(false);
+const isDesktop = window.innerWidth >= 768
 
 //roteador
 const router = useRouter();
@@ -78,7 +79,7 @@ const voltarlogin = () => {
       <AuthHeader
         title="Redefinir senha"
         subtitle="Digite seu e-mail para receber o link de recuperação">
-      <template #logo>
+      <template #logo v-if="isDesktop">
         <img :src="MedConnectLogo" alt="MedConnect Logo">
       </template>
       </AuthHeader>

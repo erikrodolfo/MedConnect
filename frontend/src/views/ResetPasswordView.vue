@@ -3,7 +3,7 @@
     <AuthCard>
       <AuthHeader title="Crie sua nova senha" subtitle="Digite e confirme sua nova senha para acessar sua conta">
 
-        <template #logo>
+        <template #logo v-if="isDesktop">
           <img :src="MedConnectLogo" alt="MedConnect Logo">
         </template>
       </AuthHeader>
@@ -111,6 +111,7 @@ const temMaiuscula = ref(false);
 const temNumeros = ref(false);
 const temEspeciais = ref(false);
 const tamanhoMinSenha = ref(false);
+const isDesktop = window.innerWidth >= 768
 
 //juntando todas as validações com o computed
 const senhaValida = computed(() => {

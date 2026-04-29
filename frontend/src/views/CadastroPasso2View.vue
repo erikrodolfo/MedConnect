@@ -42,6 +42,7 @@ const numero = ref("");
 const bairro = ref("");
 const cidade = ref("");
 const carregando = ref(false);
+const isDesktop = window.innerWidth >= 768
 const dadosPasso1 = ref({
   nome: "",
   email: "",
@@ -163,7 +164,7 @@ const voltar = () => {
         title="Endereço"
         subtitle="Crie sua conta para começar a agendar suas consultas">
       
-        <template #logo>
+        <template #logo v-if="isDesktop">
           <img :src="MedConnectLogo" alt="MedConnect Logo">
         </template>
       </AuthHeader>

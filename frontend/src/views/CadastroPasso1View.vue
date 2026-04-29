@@ -32,6 +32,7 @@ const email = ref("");
 const senha = ref("");
 const mostrarSenha = ref(false);
 const senhaValida = ref(false);
+const isDesktop = window.innerWidth >= 768
 
 //roteador
 const router = useRouter();
@@ -103,7 +104,7 @@ const progresso = computed(() => {
         subtitle="Crie sua conta para começar a agendar suas consultas"
       >
         <!-- Logo -->
-        <template #logo>
+        <template #logo v-if="isDesktop">
           <img :src="MediConnectLogo" alt="MedConnect Logo" />
         </template>
       </AuthHeader>
