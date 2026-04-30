@@ -6,12 +6,12 @@ defineProps<{
 </script>
 
 <template>
-  <div class="auth-header">
+  <header class="auth-header">
      <slot name="logo"></slot>
 
     <h1>{{ title }}</h1>
     <p class="subtitle">{{ subtitle }}</p>
-  </div>
+  </header>
 </template>
 
 <style scoped>

@@ -3,15 +3,15 @@ import BackgroundImg from "@/assets/background.png";
 </script>
 
 <template>
-  <div class="auth-layout">
-    <div class="auth-content">
+  <main class="auth-layout">
+    <section class="auth-content">
       <slot></slot>
-    </div>
+    </section>
 
-    <div class="auth-hero">
+    <section class="auth-hero">
       <img :src="BackgroundImg" class="hero-image" />
-    </div>
-  </div>
+    </section>
+  </main>
 </template>
 
 <style scoped>

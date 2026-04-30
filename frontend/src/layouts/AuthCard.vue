@@ -1,7 +1,7 @@
 <template>
-  <div class="auth-card">
+  <section class="auth-card">
     <slot></slot>
-  </div>
+  </section>
 </template>
 
 <style>
