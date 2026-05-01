@@ -1,6 +1,8 @@
 # Guias de deploy (documentação local)
 DEPLOY-*.md
 GUIA-*.md
+EXEMPLO-*.md
+CURSO-*.md
 
 # IDEs
 .vscode/
