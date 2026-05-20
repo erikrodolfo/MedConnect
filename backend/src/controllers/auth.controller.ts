@@ -1,4 +1,4 @@
-import express, { Request, response, Response } from 'express';
+import { Request, Response } from 'express';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import Usuario from '../models/Usuario';
@@ -6,11 +6,13 @@ import { CustomRequest } from '../middlewares/auth.middleware';
 import validator from 'validator';
 import crypto from 'crypto';
 import { enviarEmailRecuperacao } from '../services/email.service';
+import fs from 'fs';
 
 export async function registro(req: Request, res: Response) {
   try {
     const { nome, email, senha, logradouro, numero, bairro, cidade, cep } =
       req.body; //extraindo os dados da requisição https
+
     const usuarioExistente = await Usuario.findOne({ email }); //verificando se o usuário já existe
     if (usuarioExistente) {
       return res
@@ -42,7 +44,7 @@ export async function registro(req: Request, res: Response) {
       bairro: usuarioHash.bairro,
       cidade: usuarioHash.cidade,
       cep: usuarioHash.cep,
-      mensagem: 'USuario Cadastrado com sucesso!',
+      mensagem: 'Usuario Cadastrado com sucesso!',
     });
   } catch (erro) {
     if (erro instanceof Error) {
@@ -98,16 +100,25 @@ export async function login(req: Request, res: Response) {
     return res.status(500).json({ erro: 'Erro desconhecido no servidor.' });
   }
 }
-
 export const buscarPerfil = async (req: CustomRequest, res: Response) => {
-  //extraindo dados que o middleware colocou na requisição
-  const dadoUsuario = req.usuario;
+  try {
+    if (!req.usuario?.id) {
+      return res.status(401).json({ erro: 'Usuário não autenticado' });
+    }
 
-  if (!dadoUsuario) {
-    return res.status(400).json({ erro: 'Usuário não encontrado no token' });
+    const dadoUsuario = await Usuario.findById(req.usuario.id).select('-senha');
+
+    if (!dadoUsuario) {
+      return res.status(404).json({ erro: 'Usuário não encontrado' });
+    }
+
+    return res.status(200).json(dadoUsuario);
+  } catch (error) {
+    if (error instanceof Error) {
+      return res.status(400).json({ erro: error.message });
+    }
+    return res.status(500).json({ erro: 'Erro desconhecido no servidor' });
   }
-
-  return res.status(200).json(dadoUsuario);
 };
 
 //função recebe email, gera token, envia email
@@ -121,7 +132,7 @@ export const solicitarRecuperacao = async (
   //validando se o email está vazio
   if (!email) {
     return res.status(400).json({
-      erro: 'Email é origatório',
+      erro: 'Email é obrigatório',
     });
   }
 
@@ -231,5 +242,98 @@ export const resetarSenha = async (req: CustomRequest, res: Response) => {
     return res.status(500).json({
       erro: 'Erro desconhecido no servidor',
     });
+  }
+};
+
+export const atualizarFotoPerfil = async (
+  req: CustomRequest,
+  res: Response
+) => {
+  try {
+    //verificando se o usuário está autenticado
+    if (!req.usuario?.id) {
+      return res.status(401).json({ erro: 'Usuário não autenticado' });
+    }
+
+    //verificando se foi enviado um arquivo
+    if (!req.file) {
+      return res.status(400).json({ erro: 'Nenhuma imagem foi enviada' });
+    }
+
+    //buscando usuário pelo ID no banco
+    const usuario = await Usuario.findById(req.usuario.id);
+
+    if (!usuario) {
+      return res.status(404).json({ erro: 'Usuário não encontrado' });
+    }
+
+    if (!usuario.fotoPerfil) {
+      try {
+        //deletar foto antiga se existir
+        fs.unlinkSync(usuario.fotoPerfil as string);
+      } catch (err) {
+        console.error('Erro ao deletar foto antiga:', err);
+      }
+    }
+
+    //atualizar foto de perfil
+    usuario.fotoPerfil = req.file.path;
+    await usuario.save();
+
+    return res.status(200).json({
+      mensagem: 'Foto atualizada com sucesso',
+      fotoPerfil: usuario.fotoPerfil, //atualiza o campo com o caminho do arquivo
+    });
+  } catch (error) {
+    if (error instanceof Error) {
+      return res.status(400).json({ erro: error.message });
+    }
+
+    return res.status(500).json({ erro: 'Erro desconhecido no servidor' });
+  }
+};
+
+export const removerFotoPerfil = async (req: CustomRequest, res: Response) => {
+  try {
+    //verificando se o usuário está autenticado
+    if (!req.usuario?.id) {
+      return res.status(401).json({ erro: 'Usuário não autenticado' });
+    }
+
+    //buscando usuário pelo ID no banco
+    const usuario = await Usuario.findById(req.usuario.id);
+
+    if (!usuario) {
+      return res.status(404).json({ erro: 'Usuário não encontrado' });
+    }
+
+    //verificando se o usuário tem foto para remover
+    if (!usuario.fotoPerfil) {
+      return res
+        .status(400)
+        .json({ erro: 'Usuário não possui foto de perfil' });
+    }
+
+    //deletar arquivo físico do servidor
+    try {
+      fs.unlinkSync(usuario.fotoPerfil as string);
+    } catch (err) {
+      console.error('Erro ao deletar arquivo de foto:', err);
+    }
+
+    //remover referência do banco de dados
+    await Usuario.findByIdAndUpdate(req.usuario.id, {
+      $unset: { fotoPerfil: '' }
+    })
+
+    return res.status(200).json({
+      mensagem: 'Foto removida com sucesso',
+    });
+  } catch (error) {
+    if (error instanceof Error) {
+      return res.status(400).json({ erro: error.message });
+    }
+
+    return res.status(500).json({ erro: 'Erro desconhecido no servidor' });
   }
 };
