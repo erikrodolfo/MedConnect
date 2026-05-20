@@ -6,16 +6,19 @@ import CadastroPasso2View from "../views/CadastroPasso2View.vue";
 import ForgotPasswordView from "../views/ForgotPasswordView.vue";
 import ResetPasswordView from "../views/ResetPasswordView.vue";
 import EmDesenvolvimento from "../views/EmDesenvolvimento.vue";
+import OnboardingView from "../views/OnboardingView.vue";
+import DashboardView from "../views/DashboardView.vue";
 
 // Rotas
 const routes = [
   {
     path: "/",
-    redirect: () => { //se o usuário tiver um token guardado no localStorage ou no SessionStorage
+    redirect: () => {
+      //se o usuário tiver um token guardado no localStorage ou no SessionStorage
       const token =
         localStorage.getItem("token") || sessionStorage.getItem("token");
       return token ? "/dashboard" : "/login"; //redireciona para o dashboard, se não, redireciona pro login
-    }, 
+    },
   },
   {
     path: "/login",
@@ -32,8 +35,15 @@ const routes = [
     component: CadastroPasso2View,
   },
   {
+    path: "/onboarding",
+    name: "Onboarding",
+    component: OnboardingView,
+  },
+  {
     path: "/dashboard",
-    redirect: "/em-desenvolvimento",
+    name: "Dashboard",
+    component: DashboardView,
+    //  redirect: "/em-desenvolvimento",
     meta: {
       requiresAuth: true,
     },
