@@ -12,3 +12,8 @@ senha-database
 # Sistema
 .DS_Store
 Thumbs.db
+
+# Uploads de usuários
+uploads/*
+!uploads/.gitkeep
+

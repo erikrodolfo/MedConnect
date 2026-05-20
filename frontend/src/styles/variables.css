@@ -1,7 +1,7 @@
 :root {
   /* Cor da Marca */
   --color-primary: #1f57a6; /* identidade */
-  --color-primary-dark: #06259a;
+ --color-primary-dark: #06259a ;
   --color-primary-light: #4da3d9;
   --color-primary-lighter: #e6eaff;
 
@@ -9,9 +9,9 @@
   --color-secondary: #2f7dbf;
 
   /* Superfícies (Backgrounds) */
-  --color-surface: #f5f8ff; /* Branco neve - cards, inputs */
+  --color-surface: #dfe6ff; /* azul bem perceptível - cards, inputs */
   --color-background: #f9fafb; /* Cinza claro - fundo da página */
-  --color-background-alt: #f3f4f6; /* Cinza - alternativo */
+  --color-background-alt: #e3e9f6; /* Cinza c azul - alternativo */
 
   /* Texto */
   --color-text-primary: #1A1D29; /* Texto principal */
@@ -29,31 +29,32 @@
   --color-info: #3b82f6; /* Azul claro */
 
   /* Fontes */
-  --primary-font: "Josefin Sans", sans-serif;
+  --primary-font: "Outfit", sans-serif;
+  --secondary-font: "Monda", sans-serif;
 }
 
-/*tema escuro*/
+/* Tema escuro */
 [data-theme="dark"] {
-   /* Cor da Marca */
+  /* Cor da Marca */
   --color-primary: #1f57a6; /* identidade */
-  --color-primary-dark: #06259a;
+  --color-primary-dark: #173f7a;
   --color-primary-light: #4da3d9;
-  --color-primary-lighter: #e6eaff;
+  --color-primary-lighter: #8cc7eb;
 
   /* Cores secundárias */
   --color-secondary: #2f7dbf;
 
   /* Superfícies (Backgrounds) */
-  --color-surface: #f5f8ff; /* Branco neve - cards, inputs */
-  --color-background: #f9fafb; /* Cinza claro - fundo da página */
-  --color-background-alt: #dddddd; /* Cinza - alternativo */
+  --color-surface: #1b2431; /* cards, inputs */
+  --color-background: #111827; /* fundo principal */
+  --color-background-alt: #1f2937; /* fundo alternativo */
 
   /* Texto */
-  --color-text-primary: #1A1D29; /* Texto principal */
-  --color-text-secondary: #686e7a; /* Texto secundário */
-  --color-text-disabled: #9ca3af; /* Texto desabilitado */
+  --color-text-primary: #f3f4f6; /* texto principal */
+  --color-text-secondary: #cbd5e1; /* texto secundário */
+  --color-text-disabled: #6b7280; /* texto desabilitado */
 
   /* Bordas */
-  --color-border: #e5e7eb; /* Bordas sutis */
-  --color-border-focus: var(--color-primary); /* Borda em foco */
+  --color-border: #374151; /* bordas sutis */
+  --color-border-focus: var(--color-primary); /* borda em foco */
 }

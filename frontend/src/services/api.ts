@@ -2,12 +2,11 @@ import axios from "axios";
 import router from "../router"; // Porta de saída - usado para redirecionar usuário
 
 // Estende o tipo AxiosRequestConfig para incluir skipAuthRedirect
-declare module 'axios' {
+declare module "axios" {
   export interface AxiosRequestConfig {
     skipAuthRedirect?: boolean;
   }
 }
-
 
 // Cria a instância do axios com configuração padrão
 const api = axios.create({
@@ -29,7 +28,8 @@ const api = axios.create({
 api.interceptors.request.use(
   (config) => {
     // Pega token do localStorage (salvo no login)
-    const token = localStorage.getItem("token");
+    const token =
+      localStorage.getItem("token") || sessionStorage.getItem("token");
 
     // Se token existe, adiciona no header Authorization
     if (token && config.headers) {
@@ -67,8 +67,11 @@ api.interceptors.response.use(
           "[interceptor] Sessão expirada ou token inválido. Expulsando usuário...",
         );
 
-        // Remove token inválido
+        // Remove de ambos os storages
         localStorage.removeItem("token");
+        sessionStorage.removeItem("token");
+        localStorage.removeItem("usuario");
+        sessionStorage.removeItem("usuario");
 
         // Redireciona para login
         router.push("/login");

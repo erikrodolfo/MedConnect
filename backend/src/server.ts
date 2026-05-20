@@ -2,12 +2,12 @@ import 'dotenv/config'; //carrega variáveis de ambiente (PRECISA SER A PRIMEIRA
 import express from 'express'; //framework para criar a api
 import mongoose from 'mongoose'; //ODM para mongoDB
 import cors from 'cors'; //permite requisições de outros domínios
+import path from 'path';
 
 //rotas da apliacação
 import authRoutes from './routes/auth.routes';
 import agendamentoRoutes from './routes/agendamento.routes';
 import cepRouts from './routes/cep.routes';
-import { verificarConexao } from './services/email.service';
 
 const app = express();
 
@@ -31,6 +31,11 @@ app.use(
 //middlewares
 app.use(express.json()); //parseia body das requisições como JSON || sem isso o req.body seria undefined
 app.use(express.urlencoded({ extended: true })); //parseia todos os dados de formulários
+
+app.use(
+  '/uploads',
+  express.static(path.join(__dirname, '..', 'uploads'))
+);
 
 //health check
 app.get('/health', (req, res) => {

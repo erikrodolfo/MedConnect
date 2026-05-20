@@ -23,7 +23,7 @@ const vfm = createVfm();
 app.use(vfm);
 app.use(router);
 app.use(Vue3Toastify, {
-  autoClose: 3000,
+  autoClose: 2000,
   closeButton: !isMobile,
   position: isMobile ? 'top-center' : 'bottom-right',
   toastStyle: {

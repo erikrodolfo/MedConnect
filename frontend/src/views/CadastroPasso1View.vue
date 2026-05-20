@@ -32,7 +32,7 @@ const email = ref("");
 const senha = ref("");
 const mostrarSenha = ref(false);
 const senhaValida = ref(false);
-const isDesktop = window.innerWidth >= 768
+const isDesktop = window.innerWidth >= 768;
 
 //roteador
 const router = useRouter();
@@ -57,7 +57,6 @@ const cadastrarUsuario = () => {
     return;
   }
 
-  //pegando todos os dados
   const dados = {
     nome: nome.value,
     email: email.value,
