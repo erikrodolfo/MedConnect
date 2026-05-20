@@ -1,4 +1,5 @@
 import mongoose, { Document, Schema } from 'mongoose';
+import { trim } from 'validator';
 
 export interface IUsuario extends Document {
   nome: string;
@@ -9,6 +10,7 @@ export interface IUsuario extends Document {
   bairro: string;
   cidade: string;
   cep: string;
+  fotoPerfil?: string;
   role: string;
   resetPasswordToken?: string | undefined;
   resetPasswordExpires?: Date | undefined;
@@ -64,10 +66,11 @@ const UsuarioSchema: Schema = new Schema({
     match: [/^\d{5}-?\d{3}$/, 'CEP inválido'],
   },
 
-  endereco: {
+  fotoPerfil: {
     type: String,
+    required: false,
     trim: true,
-    minlength: 5,
+    default: null
   },
 
   role: {
