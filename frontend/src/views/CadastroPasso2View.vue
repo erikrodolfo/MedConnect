@@ -33,7 +33,7 @@ import {
 import api from "../services/api";
 
 //Imagens
-import MedConnectLogo from '@/assets/medconnect-logo-name.png'
+import MedConnectLogo from "@/assets/medconnect-logo-name.png";
 
 //variáveis reativas
 const cep = ref("");
@@ -42,7 +42,7 @@ const numero = ref("");
 const bairro = ref("");
 const cidade = ref("");
 const carregando = ref(false);
-const isDesktop = window.innerWidth >= 768
+const isDesktop = window.innerWidth >= 768;
 const dadosPasso1 = ref({
   nome: "",
   email: "",
@@ -59,6 +59,7 @@ onMounted(() => {
       nome: history.state.nome,
       email: history.state.email,
       senha: history.state.senha,
+
     };
   } else {
     toast.warning("Por favor, preencha todos os dados do Passo 1");
@@ -69,7 +70,7 @@ onMounted(() => {
 //função buscar cep
 const buscarCep = async () => {
   const cepLimpo = cep.value.replace(/\D/g, "");
-  console.log("🧹 CEP limpo:", cepLimpo);
+  console.log("CEP limpo:", cepLimpo);
 
   if (cepLimpo.length === 8) {
     try {
@@ -93,7 +94,7 @@ const buscarCep = async () => {
 
 //função cadastrar usuario
 const cadastrarUsuario = async () => {
-  carregando.value = true;
+
   if (
     !logradouro.value ||
     !numero.value ||
@@ -105,6 +106,7 @@ const cadastrarUsuario = async () => {
     return;
   }
 
+    carregando.value = true;
   const dados = {
     ...dadosPasso1.value,
     cep: cep.value,
@@ -115,11 +117,32 @@ const cadastrarUsuario = async () => {
   };
 
   try {
+    //cadastrando usuário
     const resposta = await api.post("/auth/registro", dados);
+
+    try {
+    //fazendo login automático para obter token
+    const loginResposta = await api.post('/auth/login', {
+      email: dadosPasso1.value.email,
+      senha: dadosPasso1.value.senha
+    })
+
+    //salvando o token no localstorage
+    localStorage.setItem("token", loginResposta.data.token)
+    localStorage.setItem("usuario", JSON.stringify(loginResposta.data.usuario))
+
 
     console.log("Resposta do servidor: ", resposta.data);
     toast.success("Cadastrado com sucesso");
-    router.push("/login");
+    
+    router.push("/onboarding");
+    } catch (erroLogin) {
+      console.error("Erro no login automático:", erroLogin)
+      toast.success("Cadastro Realizado! Faça login para continuar")
+      router.push('/login')
+    }
+
+
   } catch (erro: any) {
     if (erro.response && erro.response.data && erro.response.data.erro) {
       toast.error(erro.response.data.erro);
@@ -145,9 +168,9 @@ const progresso2 = computed(() => {
 
   const resultado = (preenchidos / campos.length) * 100;
 
-  console.log("progresso:", resultado)
+  console.log("progresso:", resultado);
 
-  return resultado
+  return resultado;
 });
 
 //função voltar
@@ -162,10 +185,10 @@ const voltar = () => {
       <AuthProgress :step="2" :progress="progresso2" />
       <AuthHeader
         title="Endereço"
-        subtitle="Crie sua conta para começar a agendar suas consultas">
-      
+        subtitle="Crie sua conta para começar a agendar suas consultas"
+      >
         <template #logo v-if="isDesktop">
-          <img :src="MedConnectLogo" alt="MedConnect Logo">
+          <img :src="MedConnectLogo" alt="MedConnect Logo" />
         </template>
       </AuthHeader>
       <!-- Formulário -->
@@ -252,7 +275,11 @@ const voltar = () => {
 }
 
 .button-voltar {
-  background-image: linear-gradient(45deg, var(--color-background), var(--color-background-alt));
+  background-image: linear-gradient(
+    45deg,
+    var(--color-background),
+    var(--color-background-alt)
+  );
   color: var(--color-primary);
   border: 1px solid var(--color-primary);
 }
