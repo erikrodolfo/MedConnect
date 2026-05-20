@@ -3,6 +3,8 @@ import jwt from 'jsonwebtoken'
 import 'multer'
 export interface CustomRequest extends Request {
   usuario?: any
+
+  file?: Express.Multer.File | undefined
 }
 
 export function autenticarToken(req: CustomRequest, res: Response, next: NextFunction) {
