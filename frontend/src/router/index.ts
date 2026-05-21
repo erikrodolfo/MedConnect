@@ -7,7 +7,7 @@ import ForgotPasswordView from "../views/ForgotPasswordView.vue";
 import ResetPasswordView from "../views/ResetPasswordView.vue";
 import EmDesenvolvimento from "../views/EmDesenvolvimento.vue";
 import OnboardingView from "../views/OnboardingView.vue";
-import DashboardView from "../views/DashboardView.vue";
+//import DashboardView from "../views/DashboardView.vue";
 
 // Rotas
 const routes = [
@@ -42,8 +42,8 @@ const routes = [
   {
     path: "/dashboard",
     name: "Dashboard",
-    component: DashboardView,
-    //  redirect: "/em-desenvolvimento",
+    //component: DashboardView,
+    redirect: "/em-desenvolvimento",
     meta: {
       requiresAuth: true,
     },
