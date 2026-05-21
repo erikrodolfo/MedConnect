@@ -42,8 +42,8 @@ const routes = [
   {
     path: "/dashboard",
     name: "Dashboard",
-    component: DashboardView,
-    //  redirect: "/em-desenvolvimento",
+    //component: DashboardView,
+    redirect: "/em-desenvolvimento",
     meta: {
       requiresAuth: true,
     },
