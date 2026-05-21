@@ -7,7 +7,7 @@ import ForgotPasswordView from "../views/ForgotPasswordView.vue";
 import ResetPasswordView from "../views/ResetPasswordView.vue";
 import EmDesenvolvimento from "../views/EmDesenvolvimento.vue";
 import OnboardingView from "../views/OnboardingView.vue";
-import DashboardView from "../views/DashboardView.vue";
+//import DashboardView from "../views/DashboardView.vue";
 
 // Rotas
 const routes = [
