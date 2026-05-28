@@ -123,6 +123,11 @@ defineProps<{
       0px 0px 15px var(--color-primary-light),
       0 0 30px var(--color-primary-lighter);
   }
+
+  .spinner {
+    width: 21px;
+  height: 21px;
+  }
 }
 
 @keyframes spin {
