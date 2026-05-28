@@ -8,7 +8,7 @@ import { computed, ref } from "vue";
 import { useRouter } from "vue-router";
 
 //lucide icons
-import { Mail, LockKeyholeIcon, Eye, EyeOff, Loader2Icon } from "@lucide/vue";
+import { Mail, LockKeyholeIcon, Eye, EyeOff } from "@lucide/vue";
 
 //componentes
 import InputField from "../components/ui/InputField.vue";
