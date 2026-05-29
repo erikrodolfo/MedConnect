@@ -14,10 +14,12 @@ const app = express();
 const allowedOrigins = process.env.FRONTEND_URL
   ? [
       process.env.FRONTEND_URL, //url de produção
-      'http://localhost:5173', //desenvolvimento
-      'http://localhost:5174', //desenvolvimento alternativo
+      'http://localhost:5173',
+      'http://192.168.0.109:5173', //desenvolvimento
+      'http://192.168.0.109:5174',
+      'https://abc123.ngrok-free.app', //desenvolvimento alternativo
     ]
-  : ['http://localhost:5173']; //fallback
+  : ['http://192.168.0.109:5173']; //fallback
 
 app.use(
   cors({
@@ -32,10 +34,7 @@ app.use(
 app.use(express.json()); //parseia body das requisições como JSON || sem isso o req.body seria undefined
 app.use(express.urlencoded({ extended: true })); //parseia todos os dados de formulários
 
-app.use(
-  '/uploads',
-  express.static(path.join(__dirname, '..', 'uploads'))
-);
+app.use('/uploads', express.static(path.join(__dirname, '..', 'uploads')));
 
 //health check
 app.get('/health', (req, res) => {
@@ -81,7 +80,7 @@ app.use(
 
 //conectar ao Mongo DB
 mongoose
-  .connect(process.env.MONGO_URI || 'mongodb://localhost:27017/clinica')
+  .connect(process.env.MONGO_URI || 'mongodb://192.168.0.109:27017/clinica')
   .then(() => {
     console.log('Conectado ao MongoDB');
     console.log(`Database: ${mongoose.connection.name}`);
@@ -98,12 +97,13 @@ mongoose
 
 //iniciar servidor
 const PORT = process.env.PORT || 3000; //usa variável de ambiente ou 3000
+const HOST = '0.0.0.0'; //aceita conexões de qualquer IP (necessário para acessar de outros dispositivos na rede local)
 
-app.listen(PORT, () => {
+app.listen(Number(PORT), HOST, () => {
   console.log(`Servidor rodando na porta: ${PORT}`);
   console.log(`Ambiente: ${process.env.NODE_ENV || 'development'}`);
-  console.log(`URL: http://localhost:${PORT}`);
-  console.log(`Health Check: http://localhost:${PORT}/health`);
+  console.log(`URL: http://192.168.0.109:${PORT}`);
+  console.log(`Health Check: http://192.168.0.109:${PORT}/health`);
 });
 
 //tratamento de sinais
