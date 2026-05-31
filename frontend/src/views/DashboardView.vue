@@ -425,6 +425,10 @@ console.log("Agendamento selecionado:", agendamentoSelecionado.value);
   box-sizing: border-box;
 }
 
+header {
+  z-index: 99999;
+}
+
 .user-nav {
   width: 100%;
   display: flex;
@@ -433,10 +437,10 @@ console.log("Agendamento selecionado:", agendamentoSelecionado.value);
 }
 
 .user-header {
-  background-image: linear-gradient(45deg, var(--color-surface), var(--color-background));
+  background-color: var(--color-background-alt);
   width: 100%;
   height: auto;
-  padding: 1.5rem;
+  padding: 1rem 1.5rem ;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -445,7 +449,7 @@ console.log("Agendamento selecionado:", agendamentoSelecionado.value);
   position: fixed;
   top: 0;
   left: 0;
-  z-index: 99999;
+  border-bottom: 1px solid var(--color-primary);
 }
 
 .user-header .logo-wraper a {
