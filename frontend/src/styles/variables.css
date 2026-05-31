@@ -9,9 +9,9 @@
   --color-secondary: #2f7dbf;
 
   /* Superfícies (Backgrounds) */
-  --color-surface: #dfe6ff; /* azul bem perceptível - cards, inputs */
-  --color-background: #f9fafb; /* Cinza claro - fundo da página */
-  --color-background-alt: #e3e9f6; /* Cinza c azul - alternativo */
+  --color-surface: #F5F5F5; /* azul bem perceptível - cards, inputs */
+  --color-background: ##f5f3ff; /* Cinza claro - fundo da página */
+  --color-background-alt: #F5FFFA; /* Cinza c azul - alternativo */
 
   /* Texto */
   --color-text-primary: #1A1D29; /* Texto principal */
@@ -27,6 +27,10 @@
   --color-error: #ef4444; /* Vermelho */
   --color-warning: #fdae26; /* Laranja */
   --color-info: #3b82f6; /* Azul claro */
+
+  /*Box-Shadows*/
+  --shadow-light:  rgba(14, 63, 126, 0.06) 0px 0px 0px 1px, rgba(42, 51, 70, 0.03) 0px 1px 1px -0.5px, rgba(42, 51, 70, 0.04) 0px 2px 2px -1px, rgba(42, 51, 70, 0.04) 0px 3px 3px -1.5px, rgba(42, 51, 70, 0.03) 0px 5px 5px -2.5px, rgba(42, 51, 70, 0.03) 0px 10px 10px -5px, rgba(42, 51, 70, 0.03) 0px 24px 24px -8px;;box-shadow: rgba(50, 50, 105, 0.15) 0px 2px 5px 0px, rgba(0, 0, 0, 0.05) 0px 1px 1px 0px;
+
 
   /* Fontes */
   --primary-font: "Outfit", sans-serif;
