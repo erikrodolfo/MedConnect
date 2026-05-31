@@ -2,12 +2,11 @@ import { createRouter, createWebHistory } from "vue-router";
 import LoginView from "../views/LoginView.vue";
 import CadastroPasso1View from "../views/CadastroPasso1View.vue";
 import CadastroPasso2View from "../views/CadastroPasso2View.vue";
-//import DashboardView from "../views/DashboardView.vue";
+import DashboardView from "../views/DashboardView.vue";
 import ForgotPasswordView from "../views/ForgotPasswordView.vue";
 import ResetPasswordView from "../views/ResetPasswordView.vue";
 import EmDesenvolvimento from "../views/EmDesenvolvimento.vue";
 import OnboardingView from "../views/OnboardingView.vue";
-import DashboardView from "../views/DashboardView.vue";
 
 // Rotas
 const routes = [
@@ -43,7 +42,7 @@ const routes = [
     path: "/dashboard",
     name: "Dashboard",
     component: DashboardView,
-    //  redirect: "/em-desenvolvimento",
+    //redirect: "/em-desenvolvimento",
     meta: {
       requiresAuth: true,
     },
