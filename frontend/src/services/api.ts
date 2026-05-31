@@ -11,7 +11,7 @@ declare module "axios" {
 // Cria a instância do axios com configuração padrão
 const api = axios.create({
   // baseURL: URL base para todas as requisições
-  baseURL: import.meta.env.VITE_API_URL || "http://192.168.0.109:3000", //pega a variável de ambiente || fallback se a varável não existir
+  baseURL: import.meta.env.VITE_API_URL || "http://localhost:3000", //pega a variável de ambiente || fallback se a varável não existir
 
   // timeout: Tempo máximo de espera (10 segundos)
   // Se o backend não responder em 10s, cancela a requisição
