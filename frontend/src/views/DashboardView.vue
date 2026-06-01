@@ -510,10 +510,12 @@ main .dashboard-subtitle {
 .dashboard-form input {
   background-color: var(--color-background);
   color: var(--color-text-primary);
-  border: 1px solid var(--color-primary-lighter);
-  padding: 10px 20px;
-  border-radius: 8px;
-  text-align: left;
+  border: 1px solid var(--color-primary);
+  padding: 12px 20px;
+  border-radius: 10px;
+  font-weight: 600;
+  width: 100%;
+  text-align: center;
   box-sizing: border-box;
 }
 
