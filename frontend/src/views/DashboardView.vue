@@ -11,7 +11,7 @@ import {
   Calendar,
   ChevronDown,
   Calendar1,
-  Clock
+  Clock,
 } from "@lucide/vue";
 
 //roteador
@@ -44,7 +44,6 @@ const carregando = ref(false);
 const dataSelecionada = ref("");
 const horariosLivres = ref([]);
 const horarioEscolhido = ref("");
-const openDropdown = ref(false);
 const agendamentoSelecionado = ref(null);
 
 const router = useRouter();
@@ -116,18 +115,15 @@ const formatarData = (dataISO) => {
 
   const data = new Date(dataISO);
 
-  const diaSemana = data
-  .toLocaleString("pt-BR", { weekday: "short" })
+  const diaSemana = data.toLocaleString("pt-BR", { weekday: "short" });
 
-  const dia = data
-  .toLocaleString("pt-BR", { day: "2-digit" })
+  const dia = data.toLocaleString("pt-BR", { day: "2-digit" });
 
-  const mes = data
-  .toLocaleString("pt-BR", { month: "long" })
+  const mes = data.toLocaleString("pt-BR", { month: "long" });
 
-  const dataFormatada = `${diaSemana.charAt(0).toUpperCase() + diaSemana.slice(1)} ${dia} de ${mes.charAt(0).toUpperCase() + mes.slice(1)}`;
+  const dataFormatada = `${diaSemana.charAt(0).toUpperCase() + diaSemana.slice(1)}, ${dia} de ${mes.charAt(0).toUpperCase() + mes.slice(1)}`;
 
-  return dataFormatada;;
+  return dataFormatada;
 };
 
 //formatando hora
@@ -154,7 +150,6 @@ const cancelarConsulta = async (id) => {
       skipAuthRedirect: true,
     });
     buscarAgendamentos();
-    fecharDropdown();
   } catch (erro) {
     toast.error(
       erro.response?.data?.erro || "Falha ao comunicar com o servidor.",
@@ -274,17 +269,6 @@ const irParaConfiguracoes = () => {
   router.push("/configuracoes");
 };
 
-//função para abrir/fechar dropdown
-function toggleDropdown(agendamento) {
-  agendamentoSelecionado.value = agendamento;
-  openDropdown.value = true;
-}
-
-//função para fechar dropdown
-function fecharDropdown() {
-  openDropdown.value = false;
-}
-
 //função de classe para status
 function classeStatus(status) {
   switch (status) {
@@ -292,14 +276,12 @@ function classeStatus(status) {
       return "status-agendada";
     case "CANCELADA":
       return "status-cancelada";
-      case "CONCLUIDA":
+    case "CONCLUIDA":
       return "status-concluida";
     default:
       return "status-default";
   }
 }
-
-console.log("Agendamento selecionado:", agendamentoSelecionado.value);
 </script>
 
 <template>
@@ -325,6 +307,8 @@ console.log("Agendamento selecionado:", agendamentoSelecionado.value);
         </div>
       </nav>
     </header>
+    <div id="anim"></div>
+
 
     <main>
       <h2 class="dashboard-title" v-if="usuarioLogado">
@@ -338,66 +322,75 @@ console.log("Agendamento selecionado:", agendamentoSelecionado.value);
         <h1 class="form-title">Agendar Nova Consulta</h1>
 
         <!--Input de data-->
-        <label for="data">Data da Consulta</label>
-          <div class="field">
-            <Calendar1 size="20" stroke-width="1.5" class="icon"/>
-            <input
-              v-model="dataSelecionada"
-              type="date"
-              id="data"
-              :min="dataMinima"
-              :max="dataMaxima"
-              @change="buscarHorarios"
-            />
-          </div>
+        <label>Data da Consulta</label>
+        <div class="field">
+          <Calendar1 size="20" stroke-width="1.5" class="icon" />
+          <input
+            v-model="dataSelecionada"
+            type="date"
+            id="data"
+            :min="dataMinima"
+            :max="dataMaxima"
+            @change="buscarHorarios"
+          />
+        </div>
 
-          <!--Seleção de horário-->
-          <label for="horario">Horários Disponíveis</label>
-          <div class="field">
-            <Clock size="20" stroke-width="1.5" class="icon"/>
-            <select
-              v-model="horarioEscolhido"
-              :disabled="horariosLivres.length === 0"
+        <!--Seleção de horário-->
+        <label>Horários Disponíveis</label>
+        <div class="field">
+          <Clock size="20" stroke-width="1.5" class="icon" />
+          <select
+            v-model="horarioEscolhido"
+            :disabled="horariosLivres.length === 0"
+          >
+            <option value="" disabled selected hidden>Horários</option>
+            <option
+              v-for="horario in horariosLivres"
+              :key="horario"
+              :value="horario"
             >
-              <option value="" disabled selected hidden>Horários</option>
-              <option
-                v-for="horario in horariosLivres"
-                :key="horario"
-                :value="horario"
-              >
-                {{ horario }}
-              </option>
-            </select>
-          </div>
-        <BaseButton :loading="carregando" type="submit" class="btn-agendar">Agendar Consulta</BaseButton>
+              {{ horario }}
+            </option>
+          </select>
+        </div>
+        <BaseButton :loading="carregando" type="submit" class="btn-agendar"
+          >Agendar Consulta</BaseButton
+        >
       </form>
 
-        <div class="agenda card" v-for="agendamento in listaAgendamentos" :key="agendamento._id">
-          <div class="data-status-wrapper">
-            <p class="data">{{ formatarData(agendamento.dataHora) }}</p>
-            <p :class="classeStatus(agendamento.status)">{{ agendamento.status }}</p>
-          </div>
-          <p class="hora">{{ formatarHora(agendamento.dataHora) }}</p>
-          <div
-              :class="{
-                'texto-discreto':
-                  agendamentoSelecionado?.previsao?.includes('disponível'),
-              }"
-            >
-              <p v-if="agendamentoSelecionado?.previsao">
-                {{ agendamentoSelecionado.previsao }}
-              </p>
-              <p v-else>Sem dados climáticos</p>
-            </div>
-            <button
-                class="btn-cancelar"
-                :disabled="carregando"
-                @click="cancelarConsulta(agendamentoSelecionado._id)"
-              >
-                Cancelar
-              </button>
+      <h2 v-if="listaAgendamentos.length > 0">Meus Agendamentos</h2>
 
+      <div
+        class="agenda card"
+        v-for="agendamento in listaAgendamentos"
+        :key="agendamento._id"
+      >
+        <div class="data-status-wrapper">
+          <p class="data">{{ formatarData(agendamento.dataHora) }}</p>
+          <p :class="classeStatus(agendamento.status)">
+            {{ agendamento.status }}
+          </p>
         </div>
+        <p class="hora">{{ formatarHora(agendamento.dataHora) }}</p>
+        <div
+          :class="{
+            'texto-discreto':
+              agendamentoSelecionado?.previsao?.includes('disponível'),
+          }"
+        >
+          <p v-if="agendamentoSelecionado?.previsao">
+            {{ agendamentoSelecionado.previsao }}
+          </p>
+          <p v-else>Sem dados climáticos</p>
+        </div>
+        <button
+          class="btn-cancelar"
+          :disabled="carregando"
+          @click="cancelarConsulta(agendamento._id)"
+        >
+          Cancelar
+        </button>
+      </div>
     </main>
   </div>
 </template>
@@ -440,16 +433,13 @@ header {
   background-color: var(--color-background-alt);
   width: 100%;
   height: auto;
-  padding: 1rem 1.5rem ;
+  padding: 1rem 1.5rem;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
   box-sizing: border-box;
-  position: fixed;
-  top: 0;
-  left: 0;
-  border-bottom: 1px solid var(--color-primary);
+  
 }
 
 .user-header .logo-wraper a {
@@ -465,6 +455,17 @@ header {
   -webkit-text-fill-color: transparent;
   text-decoration: none;
   font-family: var(--secondary-font);
+}
+
+#anim {
+  animation: navGradient 8s ease-in-out infinite alternate;
+  background: linear-gradient(
+    90deg,
+    var(--color-primary),
+    var(--color-primary-light)
+  );
+  background-size: 300% 300%;
+  padding: 2px;
 }
 
 /* Main */
@@ -577,6 +578,7 @@ main .dashboard-subtitle {
 /* Agenda */
 .agenda {
   font-weight: 300;
+  text-align: left;
 }
 
 .data-status-wrapper {
@@ -596,22 +598,22 @@ main .dashboard-subtitle {
 .status-agendada {
   color: var(--color-info);
   border: 1px solid var(--color-info);
-    background-color: var(--color-background);
+  background-color: var(--color-info-light);
   padding: 4px 8px;
   border-radius: 6px;
   font-size: 0.8rem;
 }
 
 .status-cancelada {
-    background-color: var(--color-background);
+  background-color: var(--color-error-light);
   color: var(--color-error);
   padding: 4px 8px;
   border-radius: 6px;
   font-size: 0.8rem;
-} 
+}
 
 .status-concluida {
-    background-color: var(--color-background);
+  background-color: var(--color-success-light);
   color: var(--color-success);
   padding: 4px 8px;
   border-radius: 6px;
@@ -626,9 +628,8 @@ main .dashboard-subtitle {
   font-weight: 500;
 }
 
-
 .btn-cancelar {
-  background-color: var(--color-surface);
+  background-color: var(--color-error-light);
   color: var(--color-error);
   text-transform: uppercase;
   border: 1px solid var(--color-error);
@@ -640,7 +641,7 @@ main .dashboard-subtitle {
 
 .btn-cancelar:hover {
   background-color: var(--color-error);
-  color: var(--color-background-alt);
+  color: var(--color-background);
 }
 
 .btn-cancelar:disabled {
@@ -649,4 +650,18 @@ main .dashboard-subtitle {
   opacity: 0.6;
 }
 
+/* Animações */
+@keyframes navGradient {
+  0% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+
+  100% {
+    background-position: 0% 50%;
+  }
+}
 </style>
