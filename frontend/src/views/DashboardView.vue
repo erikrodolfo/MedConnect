@@ -411,11 +411,11 @@ function classeStatus(status) {
 .dashboard-page {
   background-color: var(--color-background-alt);
   color: var(--color-text-primary);
-  width: 100%;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
   box-sizing: border-box;
+  overflow-x: hidden;
 }
 
 header {
