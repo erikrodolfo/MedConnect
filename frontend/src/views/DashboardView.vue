@@ -513,9 +513,8 @@ main .dashboard-subtitle {
   border: 1px solid var(--color-primary);
   padding: 12px 20px;
   border-radius: 10px;
-  font-weight: 600;
   width: 100%;
-  text-align: center;
+  text-align: left;
   box-sizing: border-box;
 }
 
@@ -531,7 +530,7 @@ main .dashboard-subtitle {
 .dashboard-form select {
   background-color: var(--color-background);
   border: 1px solid var(--color-primary-lighter);
-  padding: 10px 20px;
+  padding: 12px 20px;
   border-radius: 8px;
   color: var(--color-text-primary);
   text-align: left;
@@ -639,6 +638,11 @@ main > h2 {
   padding: 10px;
   border-radius: 8px;
   font-weight: 500;
+}
+
+.btn-agendar:disabled {
+  padding: 10px;
+  border-radius: 8px;
 }
 
 .btn-cancelar {
