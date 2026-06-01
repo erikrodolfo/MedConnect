@@ -80,8 +80,13 @@ app.use(
 );
 
 //conectar ao Mongo DB
+const mongoUri = 
+process.env.NODE_ENV === 'production' 
+? process.env.MONGO_URI 
+: process.env.MONGO_URI_LOCAL;
+
 mongoose
-  .connect(process.env.MONGO_URI || 'mongodb://localhost:27017/clinica')
+  .connect(mongoUri!)
   .then(() => {
     console.log('Conectado ao MongoDB');
     console.log(`Database: ${mongoose.connection.name}`);
