@@ -9,7 +9,7 @@ defineProps<{
 </script>
 
 <template>
-  <button
+    <button
     :type="type || 'button'"
     :disabled="disabled || loading"
     class="base-button"
@@ -75,12 +75,15 @@ defineProps<{
   justify-content: center;
   gap: 8px;
 }
-
-@media screen and (min-width: 768px) and (max-width: 1299px) and (min-height: 600px) {
+@media screen and (min-width: 768px) and (max-width: 1299px) and (min-height: 600px){
   .base-button {
     padding: 13px;
     border-radius: 10px;
     transition: all 0.3s ease-out;
+  }
+
+  .base-button:disabled {
+    padding: 13px;
   }
 
   .base-button:hover {
@@ -108,11 +111,11 @@ defineProps<{
     transition: all 0.3s ease;
   }
 
-  .base-button:disabled {
-  padding: 15px;
-}
+   .base-button:disabled {
+    padding: 15px;
+  }
 
-  .base-button:hover {
+    .base-button:hover {
     -webkit-box-shadow:
       0px 0px 15px var(--color-primary-light),
       0 0 30px var(--color-primary-lighter);
