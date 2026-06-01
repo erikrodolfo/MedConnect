@@ -479,6 +479,11 @@ main {
   border-radius: 15px;
 }
 
+main .dashboard-form {
+  width: 100%;
+  max-width: 400px;
+}
+
 main .dashboard-title {
   font-weight: 600;
   text-align: left;
