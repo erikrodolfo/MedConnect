@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { Loader2Icon } from "@lucide/vue";
+
 defineProps<{
   disabled?: boolean;
   loading?: boolean;
@@ -30,7 +32,7 @@ defineProps<{
   width: 100%;
   margin: 0;
   box-sizing: border-box; /* Garante que o padding não estoure a largura */
-  
+
   border-radius: 20px;
   background-image: linear-gradient(
     45deg,
@@ -47,7 +49,9 @@ defineProps<{
   display: flex;
   justify-content: center;
   align-items: center;
-  transition: transform 0.1s ease, opacity 0.3s ease;
+  transition:
+    transform 0.1s ease,
+    opacity 0.3s ease;
   cursor: pointer;
 }
 
@@ -62,13 +66,6 @@ defineProps<{
 }
 
 .spinner {
-  width: 14px;
-  height: 14px;
-  border: 2px solid white;
-  border-top: 2px solid transparent;
-  border-radius: 50%;
-  display: inline-block;
-  margin-right: 8px;
   animation: spin 1s linear infinite;
 }
 
@@ -83,7 +80,6 @@ defineProps<{
     padding: 13px;
     border-radius: 10px;
     transition: all 0.3s ease-out;
-    
   }
 
   .base-button:disabled {
@@ -101,9 +97,13 @@ defineProps<{
       0px 0px 15px var(--color-primary-light),
       0 0 30px var(--color-primary-lighter);
   }
+
+  .base-button:disabled {
+  padding: 13px;
+}
 }
 
-@media screen and (min-width: 1300px){
+@media screen and (min-width: 1300px) {
   .base-button {
     margin-top: 10px;
     border-radius: 10px;
@@ -125,6 +125,11 @@ defineProps<{
     box-shadow:
       0px 0px 15px var(--color-primary-light),
       0 0 30px var(--color-primary-lighter);
+  }
+
+  .spinner {
+    width: 21px;
+  height: 21px;
   }
 }
 
