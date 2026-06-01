@@ -515,7 +515,9 @@ main .dashboard-subtitle {
   padding: 12px 20px;
   border-radius: 10px;
   font-weight: 600;
+  width: 100%;
   text-align: center;
+  box-sizing: border-box;
 }
 
 .dashboard-form input:focus {
