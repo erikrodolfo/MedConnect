@@ -8,6 +8,10 @@ import {
   Loader2Icon,
   EllipsisVerticalIcon,
   EllipsisVertical,
+  Calendar,
+  ChevronDown,
+  Calendar1,
+  Clock,
 } from "@lucide/vue";
 
 //roteador
@@ -40,7 +44,6 @@ const carregando = ref(false);
 const dataSelecionada = ref("");
 const horariosLivres = ref([]);
 const horarioEscolhido = ref("");
-const openDropdown = ref(false);
 const agendamentoSelecionado = ref(null);
 
 const router = useRouter();
@@ -112,18 +115,29 @@ const formatarData = (dataISO) => {
 
   const data = new Date(dataISO);
 
-  const dataFormatada = data.toLocaleString("pt-BR", {
-    day: "2-digit",
-    month: "2-digit",
-    year: "numeric",
-  });
+  const diaSemana = data.toLocaleString("pt-BR", { weekday: "short" });
+
+  const dia = data.toLocaleString("pt-BR", { day: "2-digit" });
+
+  const mes = data.toLocaleString("pt-BR", { month: "long" });
+
+  const dataFormatada = `${diaSemana.charAt(0).toUpperCase() + diaSemana.slice(1)}, ${dia} de ${mes.charAt(0).toUpperCase() + mes.slice(1)}`;
+
+  return dataFormatada;
+};
+
+//formatando hora
+const formatarHora = (dataISO) => {
+  if (!dataISO) return "Hora inválida";
+
+  const data = new Date(dataISO);
 
   const horaFormatada = data.toLocaleString("pt-BR", {
     hour: "2-digit",
     minute: "2-digit",
   });
 
-  return `${dataFormatada} - ${horaFormatada}h`;
+  return horaFormatada;
 };
 
 //função para cancelar consulta
@@ -136,7 +150,6 @@ const cancelarConsulta = async (id) => {
       skipAuthRedirect: true,
     });
     buscarAgendamentos();
-    fecharDropdown();
   } catch (erro) {
     toast.error(
       erro.response?.data?.erro || "Falha ao comunicar com o servidor.",
@@ -256,15 +269,18 @@ const irParaConfiguracoes = () => {
   router.push("/configuracoes");
 };
 
-//função para abrir/fechar dropdown
-function toggleDropdown(agendamento) {
-  agendamentoSelecionado.value = agendamento;
-  openDropdown.value = true;
-}
-
-//função para fechar dropdown
-function fecharDropdown() {
-  openDropdown.value = false;
+//função de classe para status
+function classeStatus(status) {
+  switch (status) {
+    case "AGENDADA":
+      return "status-agendada";
+    case "CANCELADA":
+      return "status-cancelada";
+    case "CONCLUIDA":
+      return "status-concluida";
+    default:
+      return "status-default";
+  }
 }
 </script>
 
@@ -291,20 +307,23 @@ function fecharDropdown() {
         </div>
       </nav>
     </header>
+    <div id="anim"></div>
 
     <main>
-      <h2 class="dashboard-title" v-if="usuarioLogado">
-        Bem-vindo(a), {{ usuarioLogado.nome }}!
-      </h2>
+      <h1 class="dashboard-title" v-if="usuarioLogado">
+        Olá, {{ usuarioLogado.nome }}!
+      </h1>
       <p class="dashboard-subtitle">
         Aqui você pode agendar e acompanhar suas consultas médicas.
       </p>
-      <form @submit.prevent="agendar" class="dashboard-form">
-        <h1 class="form-title">Agendar Consulta</h1>
-        <p class="form-subtitle">
-          Selecione uma data e horário para agendar sua consulta.
-        </p>
-        <div class="inputs-wrapper">
+      <form @submit.prevent="agendar" class="dashboard-form card">
+        <!--Título do formulário-->
+        <h1 class="form-title">Agendar Nova Consulta</h1>
+
+        <!--Input de data-->
+        <label>Data da Consulta</label>
+        <div class="field">
+          <Calendar1 size="20" stroke-width="1.5" class="icon" />
           <input
             v-model="dataSelecionada"
             type="date"
@@ -313,6 +332,12 @@ function fecharDropdown() {
             :max="dataMaxima"
             @change="buscarHorarios"
           />
+        </div>
+
+        <!--Seleção de horário-->
+        <label>Horários Disponíveis</label>
+        <div class="field">
+          <Clock size="20" stroke-width="1.5" class="icon" />
           <select
             v-model="horarioEscolhido"
             :disabled="horariosLivres.length === 0"
@@ -327,70 +352,61 @@ function fecharDropdown() {
             </option>
           </select>
         </div>
-        <BaseButton :loading="carregando" type="submit">Agendar</BaseButton>
-      </form>
-      <table>
-        <thead>
-          <th>Data/Hora</th>
-          <th>Status</th>
-          <th>Ação</th>
-        </thead>
-        <tbody>
-          <tr v-for="agendamento in listaAgendamentos" :key="agendamento._id">
-            <td>
-              {{ formatarData(agendamento.dataHora) }}
-            </td>
-            <td>{{ agendamento.status }}</td>
-            <td>        <button
-                class="btn-cancelar"
-                :disabled="carregando"
-                @click="cancelarConsulta(agendamentoSelecionado._id)"
-              >
-                Cancelar
-              </button>
-            <!--Button dropdown-->
-            <button
-                class="btn-dropdown"
-                @click="toggleDropdown(agendamento)"
-                title="Mais informações"
-              >
-                <EllipsisVerticalIcon size="20" stroke-width="2" />
-              </button>
-            </td>
-            <td>
-              
-            </td>
-          </tr>
-        </tbody>
-      </table>
-      <!--Inf dropdown-->
-      <Teleport to="body">
-        <div
-          v-if="openDropdown"
-          class="dropdown-overlay"
-          @click="fecharDropdown"
+        <BaseButton :loading="carregando" type="submit" class="btn-agendar"
+          >{{ carregando ? 'Agendando...' : 'Agendar Consulta' }}</BaseButton
         >
-          <div class="dropdown" @click.stop>
-            <h2>Previsão do tempo</h2>
-            <div
-              :class="{
-                'texto-discreto':
-                  agendamentoSelecionado?.previsao?.includes('disponível'),
-              }"
-            >
-              <p v-if="agendamentoSelecionado?.previsao">
-                {{ agendamentoSelecionado.previsao }}
-              </p>
-              <p v-else>Sem dados climáticos</p>
-            </div>
-          </div>
+      </form>
+
+      <h2 v-if="listaAgendamentos.length > 0">Meus Agendamentos</h2>
+
+      <div
+        class="agenda card"
+        v-for="agendamento in listaAgendamentos"
+        :key="agendamento._id"
+      >
+        <div class="data-status-wrapper">
+          <p class="data">{{ formatarData(agendamento.dataHora) }}</p>
+          <p :class="classeStatus(agendamento.status)">
+            {{ agendamento.status }}
+          </p>
         </div>
-      </Teleport>
+        <p class="hora">{{ formatarHora(agendamento.dataHora) }}</p>
+        <div
+          :class="{
+            'texto-discreto':
+              agendamentoSelecionado?.previsao?.includes('disponível'),
+          }"
+        >
+          <p v-if="agendamentoSelecionado?.previsao">
+            {{ agendamentoSelecionado.previsao }}
+          </p>
+          <p v-else>Sem dados climáticos</p>
+        </div>
+        <button
+          class="btn-cancelar"
+          :disabled="carregando"
+          @click="cancelarConsulta(agendamento._id)"
+        >
+          {{ carregando ? 'Cancelando...' : 'Cancelar Consulta' }}
+        </button>
+      </div>
     </main>
   </div>
 </template>
 
 <style scoped>
+.card {
+  width: 100%;
+  background-color: var(--color-background);
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  box-shadow: var(--shadow-light);
+  box-sizing: border-box;
+  padding: 1.5rem;
+  border-radius: 20px;
+}
+
 .dashboard-page {
   background-color: var(--color-background-alt);
   color: var(--color-text-primary);
@@ -401,6 +417,10 @@ function fecharDropdown() {
   box-sizing: border-box;
 }
 
+header {
+  z-index: 99999;
+}
+
 .user-nav {
   width: 100%;
   display: flex;
@@ -409,19 +429,16 @@ function fecharDropdown() {
 }
 
 .user-header {
-  background: var(--color-background-alt);
+  background-color: var(--color-background-alt);
   width: 100%;
   height: auto;
-  padding: 1.5rem;
+  padding: 1rem 1.5rem;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
   box-sizing: border-box;
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: 99999;
+  
 }
 
 .user-header .logo-wraper a {
@@ -439,6 +456,17 @@ function fecharDropdown() {
   font-family: var(--secondary-font);
 }
 
+#anim {
+  animation: navGradient 8s ease-in-out infinite alternate;
+  background: linear-gradient(
+    90deg,
+    var(--color-primary),
+    var(--color-primary-lighter)
+  );
+  background-size: 300% 300%;
+  padding: 2px;
+}
+
 /* Main */
 main {
   position: relative;
@@ -449,7 +477,6 @@ main {
   flex-direction: column;
   background-color: transparent;
   border-radius: 15px;
-  margin-top: 5rem;
 }
 
 main .dashboard-title {
@@ -460,68 +487,39 @@ main .dashboard-title {
 }
 
 main .dashboard-subtitle {
-  text-align: left;
-  font-size: 0.9rem;
+  font-size: 1rem;
   color: var(--color-text-secondary);
-}
-
-/* Formulário */
-.dashboard-form {
-  position: relative;
-  width: 100%;
-  background-color: var(--color-background);
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
-  box-sizing: border-box;
-  padding: 1rem;
-  border-radius: 20px;
-  margin-top: 1.5rem;
+  text-align: left;
+  margin: 0 0 1rem 0;
 }
 
 .dashboard-form .form-title {
-  margin: 0;
-  font-size: 1.5rem;
-  font-weight: bold;
-  background: -webkit-linear-gradient(
-    -160deg,
-    var(--color-primary),
-    var(--color-secondary),
-    var(--color-primary-light)
-  );
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-  text-transform: uppercase;
+  color: var(--color-text-primary);
+  margin: 0 0 10px 0;
+  font-size: 1.2rem;
+  font-weight: 600;
+  text-align: left;
 }
 
-.dashboard-form .form-subtitle {
+.dashboard-form label {
   font-size: 0.9rem;
   color: var(--color-text-secondary);
-}
-
-.dashboard-form .inputs-wrapper {
-  width: 100%;
-  box-sizing: border-box;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1rem;
+  text-align: left;
 }
 
 .dashboard-form input {
   background-color: var(--color-background);
   color: var(--color-text-primary);
-  border: 1px solid var(--color-primary);
-  padding: 12px 20px;
-  border-radius: 10px;
-  font-weight: 600;
-  text-align: center;
+  border: 1px solid var(--color-primary-lighter);
+  padding: 10px 20px;
+  border-radius: 8px;
+  text-align: left;
+  box-sizing: border-box;
 }
 
 .dashboard-form input:focus {
   outline: none;
-  border-color: var(--color-border-focus);
-  box-shadow: 0 0 5px var(--color-primary-light);
+  border-color: var(--color-primary-light);
 }
 
 .dashboard-form input::placeholder {
@@ -530,89 +528,130 @@ main .dashboard-subtitle {
 
 .dashboard-form select {
   background-color: var(--color-background);
-  border: 1px solid var(--color-primary);
+  border: 1px solid var(--color-primary-lighter);
   padding: 10px 20px;
-  border-radius: 10px;
+  border-radius: 8px;
   color: var(--color-text-primary);
-  font-weight: 600;
-  text-align: center;
+  text-align: left;
 }
 
 .dashboard-form select:disabled {
   background-color: var(--color-background);
   color: var(--color-text-secondary);
   cursor: not-allowed;
+   text-align: left;
 }
 
 .dashboard-form select:focus {
+   text-align: left;
   outline: none;
-  box-shadow: 0 0 5px var(--color-primary-light);
+  border-color: var(--color-primary-light);
+}
+
+.dashboard-form select option:disabled {
+  background-color: var(--color-background);
+  color: var(--color-text-secondary);
+  cursor: not-allowed;
 }
 
 .dashboard-form select option {
   background-color: var(--color-background);
   color: var(--color-text-primary);
   border: none;
-  text-align: center;
 }
 
-/* Tabela */
-table {
+.field {
+  position: relative;
+}
+
+.field input,
+.field select {
+  width: 100%;
+  padding-left: 40px;
+}
+
+.icon {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+
+main > h2 {
+  font-size: 1.5rem;
+  color: var(--color-text-primary);
+  margin: 1rem 0 0.5rem 0;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+/* Agenda */
+.agenda {
+  font-weight: 300;
+  text-align: left;
+}
+
+.data-status-wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.status-default {
+  border: 1px solid;
   background-color: var(--color-background);
-  border-radius: 20px;
-  width: 100%;
-  height: auto;
-  border-spacing: 0;
-  overflow: hidden;
-  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-size: 0.8rem;
 }
 
-table thead {
-  width: 100%;
-  background-image: linear-gradient(
-    160deg,
-    var(--color-primary),
-    var(--color-secondary),
-    var(--color-primary-light)
-  );
-  color: var(--color-background);
+.status-agendada {
+  color: var(--color-info);
+  border: 1px solid var(--color-info);
+  background-color: var(--color-info-light);
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-size: 0.8rem;
 }
 
-table thead th {
+.status-cancelada {
+  background-color: var(--color-error-light);
+  color: var(--color-error);
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-size: 0.8rem;
+}
+
+.status-concluida {
+  background-color: var(--color-success-light);
+  color: var(--color-success);
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-size: 0.8rem;
+}
+
+/* Botões */
+
+.btn-agendar {
   padding: 10px;
-  border-right: 1px solid var(--color-border);
-  text-align: center;
+  border-radius: 8px;
+  font-weight: 500;
 }
-
-table tbody tr {
-  border-bottom: 1px solid var(--color-border);
-  text-align: center;
-}
-
-table tbody tr:last-child {
-  border-bottom: none;
-  border-right: none;
-}
-
-table tbody td {
-  border-right: 1px solid var(--color-border);
-  padding: 5px;
-}
-
 
 .btn-cancelar {
-  background-color: var(--color-background);
-  color: var(--color-primary);
+  background-color: var(--color-error-light);
+  color: var(--color-error);
   text-transform: uppercase;
-  border: 1px solid var(--color-primary);
-  padding: 5px;
+  border: 1px solid var(--color-error);
+  padding: 10px;
   border-radius: 6px;
   cursor: pointer;
   transition: background-color 0.2s ease;
 }
 
 .btn-cancelar:hover {
-  background-color: var(--color-primary-light);
+  background-color: var(--color-error);
   color: var(--color-background);
 }
 
@@ -622,75 +661,18 @@ table tbody td {
   opacity: 0.6;
 }
 
-.btn-dropdown {
-  background: none;
-  border: none;
-  color: var(--color-primary);
-  cursor: pointer;
-  padding: 4px 8px;
-  font-size: 1.5rem;
-  border-radius: 4px;
-  transition: all 0.2s ease;
-}
+/* Animações */
+@keyframes navGradient {
+  0% {
+    background-position: 0% 50%;
+  }
 
-.btn-dropdown:hover {
-  background-color: var(--color-surface);
-  color: var(--color-primary-light);
-}
+  50% {
+    background-position: 100% 50%;
+  }
 
-</style>
-
-<!-- Estilos globais para o Teleport dropdown -->
-<style>
-.dropdown-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 1000;
-}
-
-.dropdown {
-  position: relative;
-  background-color: var(--color-background-alt);
-  width: 18.5rem;
-  max-width: 400px;
-  padding: 1.5rem;
-  box-shadow: rgba(0, 0, 0, 0.2) 0px 8px 32px;
-  border-radius: 10px;
-  z-index: 1001;
-  color: var(--color-text-primary);
-}
-
-.dropdown::after {
-  content: "";
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  height: 4px;
-  background-image: linear-gradient(
-    45deg,
-    var(--color-primary),
-    var(--color-secondary)
-  );
-  border-radius: 0 0 10px 10px;
-}
-
-.dropdown h2 {
-  font-size: 1.2rem;
-  margin-bottom: 0.5rem;
-  background: -webkit-linear-gradient(
-    45deg,
-    var(--color-secondary),
-    var(--color-primary-light)
-  );
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
+  100% {
+    background-position: 0% 50%;
+  }
 }
 </style>

@@ -4,6 +4,7 @@ GUIA-*.md
 EXEMPLO-*.md
 CURSO-*.md
 senha-database
+DOCUMENTAÇÃO-*.md
 
 # IDEs
 .vscode/
@@ -14,6 +15,6 @@ senha-database
 Thumbs.db
 
 # Uploads de usuários
-uploads/*
-!uploads/.gitkeep
+backend/uploads/*
+!backend/uploads/.gitkeep
 
