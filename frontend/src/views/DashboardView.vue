@@ -395,6 +395,7 @@ function classeStatus(status) {
 </template>
 
 <style scoped>
+
 .card {
   width: 100%;
   background-color: var(--color-background);
@@ -410,7 +411,7 @@ function classeStatus(status) {
 .dashboard-page {
   background-color: var(--color-background-alt);
   color: var(--color-text-primary);
-  width: 100vw;
+  width: 100%;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
