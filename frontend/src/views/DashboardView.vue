@@ -482,7 +482,6 @@ main {
 
 main .dashboard-form {
   width: 100%;
-  max-width: 400px;
 }
 
 main .dashboard-title {
@@ -507,61 +506,78 @@ main .dashboard-subtitle {
   text-align: left;
 }
 
-.dashboard-form label {
+label {
   font-size: 0.9rem;
   color: var(--color-text-secondary);
   text-align: left;
 }
 
-.dashboard-form input {
+ input[type="date"] {
+  -webkit-appearance: none;
+  appearance: none;
   background-color: var(--color-background);
   color: var(--color-text-primary);
-  border: 1px solid var(--color-primary);
+  border: 1px solid var(--color-primary-lighter);
+  display: block;
+  margin: 0;
   padding: 12px 20px;
+  padding-left: 40px;
   border-radius: 10px;
   width: 100%;
   text-align: left;
   box-sizing: border-box;
+  min-height: 40px;
 }
 
-.dashboard-form input:focus {
+input[type="date"]::-webkit-date-and-time-value {
+  text-align: left;
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator {
+ display: none;
+}
+
+input:focus {
   outline: none;
   border-color: var(--color-primary-light);
 }
 
-.dashboard-form input::placeholder {
+input::placeholder {
   color: var(--color-secondary);
 }
 
-.dashboard-form select {
+select {
   background-color: var(--color-background);
   border: 1px solid var(--color-primary-lighter);
   padding: 12px 20px;
   border-radius: 8px;
   color: var(--color-text-primary);
   text-align: left;
+  width: 100%;
+  box-sizing: border-box;
+  padding-left: 40px;
 }
 
-.dashboard-form select:disabled {
+select:disabled {
   background-color: var(--color-background);
   color: var(--color-text-secondary);
   cursor: not-allowed;
    text-align: left;
 }
 
-.dashboard-form select:focus {
+select:focus {
    text-align: left;
   outline: none;
   border-color: var(--color-primary-light);
 }
 
-.dashboard-form select option:disabled {
+select option:disabled {
   background-color: var(--color-background);
   color: var(--color-text-secondary);
   cursor: not-allowed;
 }
 
-.dashboard-form select option {
+select option {
   background-color: var(--color-background);
   color: var(--color-text-primary);
   border: none;
@@ -569,12 +585,8 @@ main .dashboard-subtitle {
 
 .field {
   position: relative;
-}
-
-.field input,
-.field select {
   width: 100%;
-  padding-left: 40px;
+  max-width: 100%;
 }
 
 .icon {
@@ -660,11 +672,6 @@ main > h2 {
   border-radius: 6px;
   cursor: pointer;
   transition: background-color 0.2s ease;
-}
-
-.btn-cancelar:hover {
-  background-color: var(--color-error);
-  color: var(--color-background);
 }
 
 .btn-cancelar:disabled {
