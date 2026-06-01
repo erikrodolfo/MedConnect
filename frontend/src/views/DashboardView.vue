@@ -309,11 +309,10 @@ function classeStatus(status) {
     </header>
     <div id="anim"></div>
 
-
     <main>
-      <h2 class="dashboard-title" v-if="usuarioLogado">
+      <h1 class="dashboard-title" v-if="usuarioLogado">
         Olá, {{ usuarioLogado.nome }}!
-      </h2>
+      </h1>
       <p class="dashboard-subtitle">
         Aqui você pode agendar e acompanhar suas consultas médicas.
       </p>
@@ -354,7 +353,7 @@ function classeStatus(status) {
           </select>
         </div>
         <BaseButton :loading="carregando" type="submit" class="btn-agendar"
-          >Agendar Consulta</BaseButton
+          >{{ carregando ? 'Agendando...' : 'Agendar Consulta' }}</BaseButton
         >
       </form>
 
@@ -388,7 +387,7 @@ function classeStatus(status) {
           :disabled="carregando"
           @click="cancelarConsulta(agendamento._id)"
         >
-          Cancelar
+          {{ carregando ? 'Cancelando...' : 'Cancelar Consulta' }}
         </button>
       </div>
     </main>
@@ -462,7 +461,7 @@ header {
   background: linear-gradient(
     90deg,
     var(--color-primary),
-    var(--color-primary-light)
+    var(--color-primary-lighter)
   );
   background-size: 300% 300%;
   padding: 2px;
@@ -478,7 +477,6 @@ main {
   flex-direction: column;
   background-color: transparent;
   border-radius: 15px;
-  margin-top: 5rem;
 }
 
 main .dashboard-title {
@@ -522,7 +520,6 @@ main .dashboard-subtitle {
 .dashboard-form input:focus {
   outline: none;
   border-color: var(--color-primary-light);
-  box-shadow: 0 0 5px var(--color-primary-light);
 }
 
 .dashboard-form input::placeholder {
@@ -542,19 +539,25 @@ main .dashboard-subtitle {
   background-color: var(--color-background);
   color: var(--color-text-secondary);
   cursor: not-allowed;
+   text-align: left;
 }
 
 .dashboard-form select:focus {
+   text-align: left;
   outline: none;
   border-color: var(--color-primary-light);
-  box-shadow: 0 0 5px var(--color-primary-light);
+}
+
+.dashboard-form select option:disabled {
+  background-color: var(--color-background);
+  color: var(--color-text-secondary);
+  cursor: not-allowed;
 }
 
 .dashboard-form select option {
   background-color: var(--color-background);
   color: var(--color-text-primary);
   border: none;
-  text-align: center;
 }
 
 .field {
@@ -573,6 +576,14 @@ main .dashboard-subtitle {
   top: 50%;
   transform: translateY(-50%);
   pointer-events: none;
+}
+
+main > h2 {
+  font-size: 1.5rem;
+  color: var(--color-text-primary);
+  margin: 1rem 0 0.5rem 0;
+  text-align: center;
+  text-transform: uppercase;
 }
 
 /* Agenda */

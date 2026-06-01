@@ -8,13 +8,20 @@ defineProps<{
 
 <template>
     <button
-      :type="type || 'button'"
-      :disabled="disabled || loading"
-      class="base-button"
-    >
-      <span v-if="loading" class="spinner"></span>
-      <slot v-else></slot>
-    </button>
+    :type="type || 'button'"
+    :disabled="disabled || loading"
+    class="base-button"
+  >
+    <span class="content">
+      <slot></slot>
+      <Loader2Icon
+        v-if="loading"
+        :size="20"
+        :stroke-width="2"
+        class="spinner"
+      />
+    </span>
+  </button>
 </template>
 
 <style scoped>
@@ -65,12 +72,22 @@ defineProps<{
   animation: spin 1s linear infinite;
 }
 
+.content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
 @media screen and (min-width: 768px) and (max-width: 1299px) and (min-height: 600px){
   .base-button {
     padding: 13px;
     border-radius: 10px;
     transition: all 0.3s ease-out;
     
+  }
+
+  .base-button:disabled {
+    padding: 13px;
   }
 
   .base-button:hover {
@@ -92,6 +109,10 @@ defineProps<{
     border-radius: 10px;
     padding: 15px;
     transition: all 0.3s ease;
+  }
+
+   .base-button:disabled {
+    padding: 15px;
   }
 
     .base-button:hover {
