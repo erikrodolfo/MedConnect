@@ -1,40 +1,45 @@
 :root {
   /* Cor da Marca */
   --color-primary: #1f57a6; /* identidade */
- --color-primary-dark: #06259a ;
+  --color-primary-dark: #06259a;
   --color-primary-light: #4da3d9;
-  --color-primary-lighter: #e6eaff;
+--color-primary-lighter: #eaf4fc;
 
   /* Cores secundárias */
   --color-secondary: #2f7dbf;
 
-  /* Superfícies (Backgrounds) */
-  --color-surface: #F5F5F5; /* azul bem perceptível - cards, inputs */
-  --color-background: #f5f3ff; /* Cinza claro - fundo da página */
-  --color-background-alt: #F5FFFA; /* Cinza c azul - alternativo */
+    /* Gradiente da página */
+  --color-gradient-start: #dbeafe;
+  --color-gradient-middle:#eef6ff;
+  --color-gradient-end: #f4f7fb;
 
+  /* Superfícies (Backgrounds) */
+  --color-background: #f4f7fb;
+  --color-background-alt: #ffffff;
+--color-surface: #ffffff;
   /* Texto */
-  --color-text-primary: #1A1D29; /* Texto principal */
-  --color-text-secondary: #686e7a; /* Texto secundário */
+  --color-text-primary: #1f2937;
+  --color-text-secondary: #6b7280;
   --color-text-disabled: #9ca3af; /* Texto desabilitado */
 
   /* Bordas */
-  --color-border: #e5e7eb; /* Bordas sutis */
+ --color-border: #F3F4F6; /* Bordas sutis */
   --color-border-focus: var(--color-primary); /* Borda em foco */
 
   /* status colors */
   --color-success: #10b981; /* Verde */
   --color-success-light: #d1fae5; /* Verde claro */
   --color-error: #ef4444; /* Vermelho */
-  --color-error-light: #ffe8e8; /* Vermelho claro */
+  --color-error-rgb: 239, 68, 68; /* Vermelho em RGB para uso em rgba() */
   --color-warning: #fdae26; /* Laranja */
   --color-warning-light: #fff7ed; /* Laranja claro */
   --color-info: #3b82f6; /* Azul claro */
   --color-info-light: #dbeafe; /* Azul claro */
 
   /*Box-Shadows*/
-  --shadow-light:  rgba(14, 63, 126, 0.06) 0px 0px 0px 1px, rgba(42, 51, 70, 0.03) 0px 1px 1px -0.5px, rgba(42, 51, 70, 0.04) 0px 2px 2px -1px, rgba(42, 51, 70, 0.04) 0px 3px 3px -1.5px, rgba(42, 51, 70, 0.03) 0px 5px 5px -2.5px, rgba(42, 51, 70, 0.03) 0px 10px 10px -5px, rgba(42, 51, 70, 0.03) 0px 24px 24px -8px;;box-shadow: rgba(50, 50, 105, 0.15) 0px 2px 5px 0px, rgba(0, 0, 0, 0.05) 0px 1px 1px 0px;
-
+  --shadow-light: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-medium: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 
+            0 2px 4px -2px rgba(0, 0, 0, 0.1);
 
   /* Fontes */
   --primary-font: "Outfit", sans-serif;
@@ -52,17 +57,27 @@
   /* Cores secundárias */
   --color-secondary: #2f7dbf;
 
+      /* Gradiente da página */
+  --color-gradient-start: #111827;
+  --color-gradient-middle:#1F2937;
+  --color-gradient-end: #374151;
+
   /* Superfícies (Backgrounds) */
   --color-surface: #1b2431; /* cards, inputs */
-  --color-background: #111827; /* fundo principal */
+  --color-background: #1F2937; /* fundo principal */
   --color-background-alt: #1f2937; /* fundo alternativo */
 
   /* Texto */
   --color-text-primary: #f3f4f6; /* texto principal */
-  --color-text-secondary: #cbd5e1; /* texto secundário */
+  --color-text-secondary: #9CA3AF; /* texto secundário */
   --color-text-disabled: #6b7280; /* texto desabilitado */
 
   /* Bordas */
   --color-border: #374151; /* bordas sutis */
-  --color-border-focus: var(--color-primary); /* borda em foco */
+  --color-border-focus: #3B82F6; /* borda em foco */
+
+  /* status colors */
+    --color-error: #7F1D1D; /* Vermelho */
+  --color-error-rgb: 127, 29, 29;
+  --color-error-light: #F87171; /* Vermelho em RGB para uso em rgba() */
 }

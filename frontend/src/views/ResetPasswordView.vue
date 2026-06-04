@@ -37,12 +37,6 @@
           />
           <!--Botão redefinir-->
           <BaseButton type="submit" :loading="carregando">
-           <Loader2Icon
-              class="spinner"
-              v-if="carregando"
-              :size="14"
-              :stroke-width="2"
-            />
             {{ carregando ? "Redefinindo" : "Redefinir senha" }}
           </BaseButton>
         </div>
@@ -94,7 +88,6 @@ import {
   Eye,
   EyeOff,
   LockKeyholeIcon,
-  Loader2Icon,
 } from "@lucide/vue";
 
 //imagens

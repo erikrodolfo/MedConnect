@@ -12,6 +12,9 @@ import {
   ChevronDown,
   Calendar1,
   Clock,
+  CircleCheck,
+  CircleX,
+  X,
 } from "@lucide/vue";
 
 //roteador
@@ -290,10 +293,11 @@ function classeStatus(status) {
       <nav class="user-nav">
         <!--Container de logo-->
         <div class="logo-wraper">
-          <a href="/dashboard"> MedConnect </a>
+          <img src="../assets/medconnect-logo.png" alt="MedConnect" width="40"/>
         </div>
-        <!--container de avatar e nome -->
-        <div v-if="usuarioLogado" class="avatar">
+        <!--container de toggle theme e avatar -->
+        <div v-if="usuarioLogado" class="theme-avatar">
+          <ThemeToggle />
           <UserAvatarMenu
             :foto-perfil="userStore.usuario?.fotoPerfil ?? null"
             :nome="userStore.usuario?.nome || usuarioLogado.nome"
@@ -307,8 +311,6 @@ function classeStatus(status) {
         </div>
       </nav>
     </header>
-    <div id="anim"></div>
-
     <main>
       <h1 class="dashboard-title" v-if="usuarioLogado">
         Olá, {{ usuarioLogado.nome }}!
@@ -357,8 +359,57 @@ function classeStatus(status) {
         >
       </form>
 
-      <h2 v-if="listaAgendamentos.length > 0">Meus Agendamentos</h2>
+      <h2 v-if="listaAgendamentos.length > 0">Minhas Consultas</h2>
 
+      <!-- Resumo dos agendamentos -->
+      <section class="resumo">
+
+        <!--Total de agendamentos-->
+        <div class="total resumo-card">
+          <div class="text-wrapper">
+            <p>Total</p>
+            <p style="color: var(--color-info)">{{ listaAgendamentos.length }}</p>
+          </div>
+          <div class="resumo-icon" style="color: var(--color-info);">
+            <Calendar size="24" stroke-width="2" />
+          </div>
+        </div>
+
+        <!--Total concluídas-->
+        <div class="concluidas resumo-card">
+          <div class="text-wrapper">
+            <p>Concluídas</p>
+            <p style="color: var(--color-success);">{{ listaAgendamentos.filter(a => a.status === 'CONCLUIDA').length }}</p>
+          </div>
+          <div class="resumo-icon" style="color: var(--color-success);">
+             <CircleCheck size="24" stroke-width="2" />
+          </div>
+        </div>
+
+        <!-- Total agendadas -->
+         <div class="confirmados resumo-card">
+          <div class="text-wrapper">
+            <p>Agendada</p>
+            <p style="color: var(--color-warning);">{{ listaAgendamentos.filter(a => a.status === 'AGENDADA').length }}</p>
+          </div>
+          <div class="resumo-icon" style="color: var(--color-warning);">
+           <Clock size="24" stroke-width="2" />
+          </div>
+         </div>
+
+         <!--Total canceladas-->
+         <div class="canceladas resumo-card">
+          <div class="text-wrapper">
+            <p>Canceladas</p>
+            <p style="color: var(--color-error);">{{ listaAgendamentos.filter( a => a.status === 'CANCELADA').length }}</p>
+          </div>
+          <div class="resumo-icon" style="color: var(--color-error);">
+            <CircleX size="24" stroke-width="2" />
+          </div>
+        </div>
+      </section>
+
+      <!-- Lista de agendamentos -->
       <div
         class="agenda card"
         v-for="agendamento in listaAgendamentos"
@@ -387,6 +438,7 @@ function classeStatus(status) {
           :disabled="carregando"
           @click="cancelarConsulta(agendamento._id)"
         >
+        <X :size="20" stroke-width="2"></X>
           {{ carregando ? 'Cancelando...' : 'Cancelar Consulta' }}
         </button>
       </div>
@@ -395,6 +447,7 @@ function classeStatus(status) {
 </template>
 
 <style scoped>
+
 .card {
   width: 100%;
   background-color: var(--color-background);
@@ -405,20 +458,22 @@ function classeStatus(status) {
   box-sizing: border-box;
   padding: 1.5rem;
   border-radius: 20px;
+  border: 1px solid var(--color-border);
 }
 
 .dashboard-page {
-  background-color: var(--color-background-alt);
+   background-image: linear-gradient(
+    135deg,
+    var(--color-gradient-start),
+    var(--color-gradient-middle),
+    var(--color-gradient-end)
+  );
+
   color: var(--color-text-primary);
-  width: 100vw;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
   box-sizing: border-box;
-}
-
-header {
-  z-index: 99999;
 }
 
 .user-nav {
@@ -428,55 +483,48 @@ header {
   align-items: center;
 }
 
+[data-theme="dark"] .user-header {
+  background-color: var(--color-gradient-start);
+}
+
 .user-header {
-  background-color: var(--color-background-alt);
+  background-color: var(--color-gradient-end);
+  backdrop-filter: blur(10px);
   width: 100%;
   height: auto;
-  padding: 1rem 1.5rem;
+  padding: 10px 1rem;
   display: flex;
+  top: 0;
+  position: sticky;
+  z-index: 1000;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
   box-sizing: border-box;
-  
+  border-bottom: 1px solid var(--color-border);
+  box-shadow: var(--shadow-light);
 }
 
-.user-header .logo-wraper a {
-  font-size: 1.7rem;
-  font-weight: 500;
-  background: -webkit-linear-gradient(
-    45deg,
-    var(--color-primary),
-    var(--color-secondary),
-    var(--color-primary-light)
-  );
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-  text-decoration: none;
-  font-family: var(--secondary-font);
-}
-
-#anim {
-  animation: navGradient 8s ease-in-out infinite alternate;
-  background: linear-gradient(
-    90deg,
-    var(--color-primary),
-    var(--color-primary-lighter)
-  );
-  background-size: 300% 300%;
-  padding: 2px;
+.theme-avatar {
+  display: flex;
+  align-items: center;
+  gap: 15px;
 }
 
 /* Main */
 main {
   position: relative;
   flex: 1;
-  padding: 1.5rem;
+  padding: 1rem;
   display: flex;
   gap: 1rem;
   flex-direction: column;
   background-color: transparent;
   border-radius: 15px;
+}
+
+main .dashboard-form {
+  width: 100%;
 }
 
 main .dashboard-title {
@@ -501,60 +549,78 @@ main .dashboard-subtitle {
   text-align: left;
 }
 
-.dashboard-form label {
+label {
   font-size: 0.9rem;
   color: var(--color-text-secondary);
   text-align: left;
 }
 
-.dashboard-form input {
+ input[type="date"] {
+  -webkit-appearance: none;
+  appearance: none;
   background-color: var(--color-background);
   color: var(--color-text-primary);
   border: 1px solid var(--color-primary-lighter);
-  padding: 10px 20px;
-  border-radius: 8px;
+  display: block;
+  margin: 0;
+  padding: 12px 20px;
+  padding-left: 40px;
+  border-radius: 10px;
+  width: 100%;
   text-align: left;
   box-sizing: border-box;
+  min-height: 40px;
 }
 
-.dashboard-form input:focus {
+input[type="date"]::-webkit-date-and-time-value {
+  text-align: left;
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator {
+ display: none;
+}
+
+input:focus {
   outline: none;
   border-color: var(--color-primary-light);
 }
 
-.dashboard-form input::placeholder {
+input::placeholder {
   color: var(--color-secondary);
 }
 
-.dashboard-form select {
+select {
   background-color: var(--color-background);
   border: 1px solid var(--color-primary-lighter);
-  padding: 10px 20px;
+  padding: 12px 20px;
   border-radius: 8px;
   color: var(--color-text-primary);
   text-align: left;
+  width: 100%;
+  box-sizing: border-box;
+  padding-left: 40px;
 }
 
-.dashboard-form select:disabled {
+select:disabled {
   background-color: var(--color-background);
   color: var(--color-text-secondary);
   cursor: not-allowed;
    text-align: left;
 }
 
-.dashboard-form select:focus {
+select:focus {
    text-align: left;
   outline: none;
   border-color: var(--color-primary-light);
 }
 
-.dashboard-form select option:disabled {
+select option:disabled {
   background-color: var(--color-background);
   color: var(--color-text-secondary);
   cursor: not-allowed;
 }
 
-.dashboard-form select option {
+select option {
   background-color: var(--color-background);
   color: var(--color-text-primary);
   border: none;
@@ -562,12 +628,8 @@ main .dashboard-subtitle {
 
 .field {
   position: relative;
-}
-
-.field input,
-.field select {
   width: 100%;
-  padding-left: 40px;
+  max-width: 100%;
 }
 
 .icon {
@@ -584,6 +646,43 @@ main > h2 {
   margin: 1rem 0 0.5rem 0;
   text-align: center;
   text-transform: uppercase;
+}
+
+/* Resumo dos agendamentos */
+.resumo {
+  display: grid;
+  gap: 0.8rem;
+  grid-template-columns: 1fr 1fr;
+}
+
+.resumo-card {
+  background-color: var(--color-background);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding: 12px;
+  border-radius: 10px;
+    box-shadow: var(--shadow-light);
+    border: 1px solid var(--color-border)
+}
+
+.text-wrapper {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+}
+
+.resumo-card .text-wrapper p:first-child {
+  font-size: 0.8rem;
+  color: var(--color-text-secondary);
+  margin-bottom: 1rem;
+}
+
+.resumo-card .text-wrapper p:last-child {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: var(--color-text-primary);
 }
 
 /* Agenda */
@@ -639,20 +738,30 @@ main > h2 {
   font-weight: 500;
 }
 
-.btn-cancelar {
-  background-color: var(--color-error-light);
-  color: var(--color-error);
-  text-transform: uppercase;
-  border: 1px solid var(--color-error);
+.btn-agendar:disabled {
   padding: 10px;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: background-color 0.2s ease;
+  border-radius: 8px;
 }
 
-.btn-cancelar:hover {
-  background-color: var(--color-error);
-  color: var(--color-background);
+.btn-cancelar {
+  background-color: rgb(var(--color-error-rgb), 0.2);
+  color: var(--color-error);
+  border: none;
+  padding: 10px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-cancelar:hover:not(:disabled) {
+  background-color: rgb(var(--color-error-rgb), 0.3);
+}
+
+.btn-cancelar:active {
+  transform: scale(0.99);
 }
 
 .btn-cancelar:disabled {
@@ -661,18 +770,7 @@ main > h2 {
   opacity: 0.6;
 }
 
-/* Animações */
-@keyframes navGradient {
-  0% {
-    background-position: 0% 50%;
-  }
-
-  50% {
-    background-position: 100% 50%;
-  }
-
-  100% {
-    background-position: 0% 50%;
-  }
+[data-theme="dark"] .btn-cancelar {
+  color: var(--color-error-light);
 }
 </style>
