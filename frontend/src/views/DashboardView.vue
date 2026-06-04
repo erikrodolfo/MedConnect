@@ -434,6 +434,7 @@ function classeStatus(status) {
           <p v-else>Sem dados climáticos</p>
         </div>
         <button
+        v-if="agendamento.status !== 'CONCLUIDA'"
           class="btn-cancelar"
           :disabled="carregando"
           @click="cancelarConsulta(agendamento._id)"
