@@ -1,5 +1,6 @@
 <script setup>
 import { ref, onMounted, computed, useTemplateRef } from "vue";
+import api from "../services/api";
 import axios, { HttpStatusCode } from "axios";
 import { useRouter } from "vue-router";
 
@@ -14,7 +15,7 @@ let timerBusca;
 const carregarAgendamentos = async () => {
   try {
     const token = localStorage.getItem("token");
-    const resposta = await axios.get("http://localhost:3000/agendamentos", {
+    const resposta = await api.get("/agendamentos", {
       headers: { Authorization: `Bearer ${token}` },
     });
     agendamentos.value = resposta.data;
@@ -43,8 +44,8 @@ const atualizarStatus = async (agendamentoId, novoStatus) => {
   dadosSelect.value.push(agendamentoId);
   try {
     //
-      await axios.patch(
-      `http://localhost:3000/agendamentos/${agendamentoId}/status`,
+      await api.patch(
+      `/agendamentos/${agendamentoId}/status`,
       { status: novoStatus },
       { headers: { Authorization: `Bearer ${token}` } }
     );
@@ -64,8 +65,8 @@ const buscarPacientes = () => {
   timerBusca = setTimeout(async () => {
     const token = localStorage.getItem("token");
     console.log("Enviando requisição para:", buscar.value);
-    const { data } = await axios.get(
-      `http://localhost:3000/agendamentos?busca=${buscar.value}`,
+    const { data } = await api.get(
+      `/agendamentos?busca=${buscar.value}`,
       { headers: { Authorization: `Bearer ${token}` } }
     );
     agendamentos.value = data;
