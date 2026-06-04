@@ -481,15 +481,13 @@ function classeStatus(status) {
   display: flex;
   justify-content: space-between;
   align-items: center;
-}
-
-[data-theme="dark"] .user-header {
-  background-color: var(--color-gradient-start);
+  z-index: auto;
 }
 
 .user-header {
-  background-color: var(--color-gradient-end);
-  backdrop-filter: blur(10px);
+  background-color:var(--color-header-background);
+   backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
   width: 100%;
   height: auto;
   padding: 10px 1rem;
@@ -544,6 +542,7 @@ main .dashboard-subtitle {
 .dashboard-form .form-title {
   color: var(--color-text-primary);
   margin: 0 0 10px 0;
+  letter-spacing: 0.01em;
   font-size: 1.2rem;
   font-weight: 600;
   text-align: left;
