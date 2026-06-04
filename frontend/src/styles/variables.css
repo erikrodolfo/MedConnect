@@ -8,18 +8,21 @@
   /* Cores secundárias */
   --color-secondary: #2f7dbf;
 
+  /* cores do header */
+   --color-header-background: rgba(255, 255, 255, 0.8);
+
     /* Gradiente da página */
-  --color-gradient-start: #dbeafe;
-  --color-gradient-middle:#eef6ff;
-  --color-gradient-end: #f4f7fb;
+  --color-gradient-start: #EFF6FF;
+  --color-gradient-middle:#FFFFFF;
+  --color-gradient-end: #FAF5FF;
 
   /* Superfícies (Backgrounds) */
   --color-background: #f4f7fb;
   --color-background-alt: #ffffff;
 --color-surface: #ffffff;
   /* Texto */
-  --color-text-primary: #1f2937;
-  --color-text-secondary: #6b7280;
+  --color-text-primary: #111827;
+  --color-text-secondary: #4B5563;
   --color-text-disabled: #9ca3af; /* Texto desabilitado */
 
   /* Bordas */
@@ -56,6 +59,9 @@
 
   /* Cores secundárias */
   --color-secondary: #2f7dbf;
+
+  /* cores do header */
+  --color-header-background: rgba(15, 23, 42, 0.7);
 
       /* Gradiente da página */
   --color-gradient-start: #111827;
