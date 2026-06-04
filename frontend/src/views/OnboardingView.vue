@@ -25,6 +25,7 @@ import { Loader2Icon } from "@lucide/vue";
 //Variáveis reativas
 const fotoPerfil = ref<File | null>(null);
 const loading = ref(false);
+const loadingPular = ref(false);
 
 //roteador
 const router = useRouter();

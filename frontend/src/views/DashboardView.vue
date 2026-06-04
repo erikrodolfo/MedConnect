@@ -261,12 +261,12 @@ const handleRemoverFoto = async () => {
 
 //função para ir para o perfil
 const irParaPerfil = () => {
-  router.push("/perfil");
+  router.push("/em-desenvolvimento");
 };
 
 //função para ir para configurações
 const irParaConfiguracoes = () => {
-  router.push("/configuracoes");
+  router.push("/em-desenvolvimento");
 };
 
 //função de classe para status
@@ -352,9 +352,9 @@ function classeStatus(status) {
             </option>
           </select>
         </div>
-        <BaseButton :loading="carregando" type="submit" class="btn-agendar"
-          >{{ carregando ? 'Agendando...' : 'Agendar Consulta' }}</BaseButton
-        >
+        <BaseButton :loading="carregando" type="submit" class="btn-agendar">{{
+          carregando ? "Agendando..." : "Agendar Consulta"
+        }}</BaseButton>
       </form>
 
       <h2 v-if="listaAgendamentos.length > 0">Meus Agendamentos</h2>
@@ -387,7 +387,7 @@ function classeStatus(status) {
           :disabled="carregando"
           @click="cancelarConsulta(agendamento._id)"
         >
-          {{ carregando ? 'Cancelando...' : 'Cancelar Consulta' }}
+          {{ carregando ? "Cancelando..." : "Cancelar Consulta" }}
         </button>
       </div>
     </main>
@@ -438,7 +438,6 @@ header {
   justify-content: space-between;
   align-items: center;
   box-sizing: border-box;
-  
 }
 
 .user-header .logo-wraper a {
@@ -539,11 +538,11 @@ main .dashboard-subtitle {
   background-color: var(--color-background);
   color: var(--color-text-secondary);
   cursor: not-allowed;
-   text-align: left;
+  text-align: left;
 }
 
 .dashboard-form select:focus {
-   text-align: left;
+  text-align: left;
   outline: none;
   border-color: var(--color-primary-light);
 }
