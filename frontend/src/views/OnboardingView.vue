@@ -19,9 +19,6 @@ import AuthCard from "../layouts/AuthCard.vue";
 import ImageUpload from "../components/ui/ImageUpload.vue";
 import BaseButton from "../components/ui/BaseButton.vue";
 
-//Lucide Icons
-import { Loader2Icon } from "@lucide/vue";
-
 //Variáveis reativas
 const fotoPerfil = ref<File | null>(null);
 const loading = ref(false);
@@ -86,23 +83,10 @@ const enviarFoto = async () => {
         variant="secondary"
         :loading="loading"
       >
-        <Loader2Icon
-          v-if="loading"
-          :size="14"
-          :stroke-width="2"
-          class="spinner"
-        />
-
         {{ !loading ? "Pular" : "Pulando..." }}
       </BaseButton>
 
       <BaseButton @click="enviarFoto" :loading="loading">
-        <Loader2Icon
-          v-if="loading"
-          :size="14"
-          :stroke-width="2"
-          class="spinner"
-        />
         {{ !loading ? "Enviar foto" : "Enviando..." }}
       </BaseButton>
       <!--FIm botões-->

@@ -20,7 +20,7 @@ import InputField from "../components/ui/InputField.vue";
 import BaseButton from "../components/ui/BaseButton.vue";
 
 //Lucide icons
-import { Mail, Loader2Icon } from "@lucide/vue";
+import { Mail } from "@lucide/vue";
 
 //imagens
 import MedConnectLogo from '@/assets/medconnect-logo-name.png'
@@ -98,12 +98,6 @@ const voltarlogin = () => {
           />
           <!--Botão enviar link-->
           <BaseButton type="submit" :loading="carregando">
-            <Loader2Icon
-              v-if="carregando"
-              :size="14"
-              :stroke-width="2"
-              class="spinner"
-            />
             {{ carregando ? "Enviando..." : "Enviar Link" }}
           </BaseButton>
           <!--Botão voltar para o login-->
