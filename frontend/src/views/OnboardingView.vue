@@ -22,13 +22,16 @@ import BaseButton from "../components/ui/BaseButton.vue";
 //Variáveis reativas
 const fotoPerfil = ref<File | null>(null);
 const loading = ref(false);
+const loadingPular = ref(false);
 
 //roteador
 const router = useRouter();
 
 const pular = () => {
+  loadingPular.value = true;
   //caso não queira por a foto agora
   router.push("/dashboard");
+  loadingPular.value = false;
 };
 
 const enviarFoto = async () => {
