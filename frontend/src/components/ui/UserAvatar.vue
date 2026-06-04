@@ -50,7 +50,7 @@ import { UserIcon } from '@lucide/vue';
 
 <style scoped>
 .user-avatar {
-  border: 1px solid var(--color-secondary);
+  border: 2px solid var(--color-background-alt);
   border-radius: 50%;
   overflow: hidden;
   background: var(--color-primary);
@@ -58,6 +58,7 @@ import { UserIcon } from '@lucide/vue';
   display: flex;
   justify-content: center;
   align-items: center;
+  box-shadow: var(--shadow-medium);
 }
 
 .avatar-image {

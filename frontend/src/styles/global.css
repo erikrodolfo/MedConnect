@@ -9,7 +9,6 @@ html, body {
   padding: 0;
   width: 100vw !important;
   font-family: var(--primary-font);
-  overflow: hidden;
 }
 
 .Toastify__toast {
