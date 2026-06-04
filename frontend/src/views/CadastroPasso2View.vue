@@ -26,7 +26,6 @@ import {
   Hash,
   MapPinned,
   Building2,
-  Loader2Icon,
 } from "@lucide/vue";
 
 //API backend
@@ -243,12 +242,6 @@ const voltar = () => {
           />
           <!-- Botão Cadastrar -->
           <BaseButton type="submit" :loading="carregando">
-            <Loader2Icon
-              v-if="carregando"
-              :size="14"
-              stroke-width="2"
-              class="spinner"
-            />
             {{ carregando ? "Cadastrando" : "Cadastrar" }}
           </BaseButton>
           <BaseButton type="button" @click="voltar" class="button-voltar"
