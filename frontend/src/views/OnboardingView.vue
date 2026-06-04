@@ -84,9 +84,9 @@ const enviarFoto = async () => {
         class="skip-button"
         @click="pular"
         variant="secondary"
-        :loading="loading"
+        :loading="loadingPular"
       >
-        {{ !loading ? "Pular" : "Pulando..." }}
+        {{ !loadingPular ? "Pular" : "Pulando..." }}
       </BaseButton>
 
       <BaseButton @click="enviarFoto" :loading="loading">
